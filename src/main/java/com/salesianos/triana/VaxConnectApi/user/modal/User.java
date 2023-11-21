@@ -2,6 +2,7 @@ package com.salesianos.triana.VaxConnectApi.user.modal;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.annotation.CreatedDate;
@@ -16,17 +17,16 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
 
-@Entity
 @Table(name = "user_entity")
 @EntityListeners(AuditingEntityListener.class)
 @Data
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
+@SuperBuilder
 @Getter
 @Setter
-public class User implements UserDetails {
+public abstract class User implements UserDetails {
 
     @Id
     @GeneratedValue(generator = "UUID",strategy = GenerationType.UUID)

@@ -3,6 +3,7 @@ package com.salesianos.triana.VaxConnectApi.user.modal;
 import com.salesianos.triana.VaxConnectApi.administration.model.Administration;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -12,12 +13,12 @@ import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@PrimaryKeyJoinColumn(name = "patient_id")
 @Getter
 @Setter
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@SuperBuilder
 public class Patient extends User {
 
     @ManyToMany
