@@ -25,7 +25,6 @@ public class InitData {
                 .fotoUrl("foto.url")
                 .birthDate(LocalDate.of(2004,10,12))
                 .lastName("manoles")
-                .username("manolai")
                 .password("12345678")
                 .phoneNumber(123456789)
                 .build();

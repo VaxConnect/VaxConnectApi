@@ -35,14 +35,10 @@ public abstract class User implements UserDetails {
 
     @NaturalId
     @Column(unique = true, updatable = false)
-    private String username;
+    private String email;
 
     @Column(name = "password")
     private String password;
-
-
-    @Column(name = "email")
-    private String email;
 
     @Column(name = "name")
     private String name;
