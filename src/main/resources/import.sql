@@ -1,0 +1,1 @@
+--INSERT INTO user_entity (dni,email,name,foto_url,birth_date,last_name,username,phone_number) VALUES ('123456789','manololo@gmail.com','manolo','foto.url','12-10-2004','manoles','manola','12345678',123456789);

@@ -6,6 +6,7 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.NaturalId;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -19,6 +20,7 @@ import java.util.UUID;
 @Table(name = "user_entity")
 @EntityListeners(AuditingEntityListener.class)
 @Data
+@Inheritance(strategy = InheritanceType.JOINED)
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,7 +29,7 @@ import java.util.UUID;
 public class User implements UserDetails {
 
     @Id
-    @GeneratedValue(generator = "UUID")
+    @GeneratedValue(generator = "UUID",strategy = GenerationType.UUID)
     @GenericGenerator(name = "UUID", type = org.hibernate.id.UUIDGenerator.class)
     private UUID id;
 
@@ -35,11 +37,14 @@ public class User implements UserDetails {
     @Column(unique = true, updatable = false)
     private String username;
 
+    @Column(name = "password")
     private String password;
 
 
+    @Column(name = "email")
     private String email;
 
+    @Column(name = "name")
     private String name;
 
     @Column(name = "last_name")
@@ -48,8 +53,14 @@ public class User implements UserDetails {
     @Column(name = "phone_number")
     private int phoneNumber;
 
+    @DateTimeFormat(pattern = "dd-mm-YYYY")
     @Column(name = "birth_date")
     private LocalDate birthDate;
+
+    private String dni;
+
+    @Column(name = "foto_url")
+    private String fotoUrl;
 
     @Builder.Default
     private boolean accountNonExpired = true;
