@@ -10,6 +10,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
@@ -27,8 +29,11 @@ public class PatientService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Elemail del usuario ya ha sido registrado");
 
         Patient patient = Patient.builder()
+                .email(createUserRequest.email())
                 .name(createUserRequest.name())
                 .lastName(createUserRequest.lastName())
+                .createdAt(LocalDateTime.now())
+                .birthDate(createUserRequest.birthDate())
                 .password(passwordEncoder.encode(createUserRequest.password()))
                 .roles(roles)
                 .build();
