@@ -93,9 +93,7 @@ public abstract class User implements UserDetails {
     }
 
     @Override
-    public String getUsername() {
-        return this.email;
-    }
+    public String getUsername() {return this.email;}
 
     @Override
     public boolean isAccountNonExpired() {
