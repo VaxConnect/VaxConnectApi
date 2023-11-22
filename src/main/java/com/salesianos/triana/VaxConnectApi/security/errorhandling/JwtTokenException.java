@@ -1,4 +1,4 @@
-package security.errorhandling;
+package com.salesianos.triana.VaxConnectApi.security.errorhandling;
 
 public class JwtTokenException extends RuntimeException{
 

@@ -1,5 +1,6 @@
-package net.openwebinars.springboot.restjwt.security.jwt.access;
+package com.salesianos.triana.VaxConnectApi.security.jwt;
 
+import com.salesianos.triana.VaxConnectApi.security.errorhandling.JwtTokenException;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
 import jakarta.servlet.FilterChain;
@@ -8,6 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.java.Log;
+import org.antlr.v4.runtime.misc.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -17,8 +19,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 import org.springframework.web.servlet.HandlerExceptionResolver;
-import security.errorhandling.JwtTokenException;
-import security.jwt.JwtProvider;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -28,12 +28,16 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
+    @Autowired
     private final PatientService patientService;
+
+    @Autowired
     private final JwtProvider jwtProvider;
 
     @Autowired
     @Qualifier("handlerExceptionResolver")
     private HandlerExceptionResolver resolver;
+
 
 
 

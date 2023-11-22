@@ -9,6 +9,7 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.time.LocalDate;
@@ -16,6 +17,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Table(name = "user_entity")
 @EntityListeners(AuditingEntityListener.class)
@@ -31,84 +33,87 @@ public abstract class User implements UserDetails {
     @Id
     @GeneratedValue(generator = "UUID",strategy = GenerationType.UUID)
     @GenericGenerator(name = "UUID", type = org.hibernate.id.UUIDGenerator.class)
-    private UUID id;
+    protected UUID id;
 
     @NaturalId
     @Column(unique = true, updatable = false)
-    private String email;
+    protected String email;
 
     @Column(name = "password")
-    private String password;
+    protected String password;
 
     @Column(name = "name")
-    private String name;
+    protected String name;
 
     @Column(name = "last_name")
-    private String lastName;
+    protected String lastName;
 
     @Column(name = "phone_number")
-    private int phoneNumber;
+    protected int phoneNumber;
 
     @DateTimeFormat(pattern = "dd-mm-YYYY")
     @Column(name = "birth_date")
-    private LocalDate birthDate;
+    protected LocalDate birthDate;
 
-    private String dni;
+    protected String dni;
 
     @Column(name = "foto_url")
-    private String fotoUrl;
+    protected String fotoUrl;
 
     @Builder.Default
-    private boolean accountNonExpired = true;
+    protected boolean accountNonExpired = true;
     @Builder.Default
-    private boolean accountNonLocked = true;
+    protected boolean accountNonLocked = true;
     @Builder.Default
-    private boolean credentialsNonExpired = true;
+    protected boolean credentialsNonExpired = true;
     @Builder.Default
-    private boolean enabled = true;
+    protected boolean enabled = true;
 
     @ElementCollection(fetch = FetchType.EAGER)
-    private Set<UserRole> roles;
+    protected Set<UserRole> roles;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    protected LocalDateTime createdAt;
 
     @Builder.Default
-    private LocalDateTime lastPasswordChangeAt = LocalDateTime.now();
+    protected LocalDateTime lastPasswordChangeAt = LocalDateTime.now();
 
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return roles.stream()
+                .map(role -> "ROLE_" + role)
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList());
     }
 
     @Override
     public String getPassword() {
-        return null;
+        return this.password;
     }
 
     @Override
     public String getUsername() {
-        return null;
+        return this.email;
     }
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return this.credentialsNonExpired;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return false;
+        return this.accountNonLocked;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return this.credentialsNonExpired;
     }
 
     @Override
     public boolean isEnabled() {
-        return false;
+        return this.enabled;
     }
 }

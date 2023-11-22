@@ -21,6 +21,8 @@ import java.util.UUID;
 @SuperBuilder
 public class Patient extends User {
 
+
+
     @ManyToMany
     @JoinTable(name = "tbl_patients",
     joinColumns = @JoinColumn(name = "responsable"),
@@ -35,6 +37,8 @@ public class Patient extends User {
 
     @OneToMany(mappedBy = "patient", orphanRemoval = true)
     private Set<Administration> administrations = new LinkedHashSet<>();
+
+
 
 
 }

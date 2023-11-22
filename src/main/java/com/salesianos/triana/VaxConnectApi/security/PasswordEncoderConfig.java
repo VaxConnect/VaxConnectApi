@@ -1,4 +1,4 @@
-package security;
+package com.salesianos.triana.VaxConnectApi.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

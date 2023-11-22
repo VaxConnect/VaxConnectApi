@@ -1,4 +1,4 @@
-package security.errorhandling;
+package com.salesianos.triana.VaxConnectApi.security.errorhandling;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;

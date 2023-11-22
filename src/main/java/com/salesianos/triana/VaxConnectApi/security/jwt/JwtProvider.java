@@ -1,25 +1,21 @@
-package security.jwt;
+package com.salesianos.triana.VaxConnectApi.security.jwt;
 import com.salesianos.triana.VaxConnectApi.user.modal.User;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
-import lombok.Data;
 import lombok.extern.java.Log;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
-import security.errorhandling.JwtTokenException;
+import com.salesianos.triana.VaxConnectApi.security.errorhandling.JwtTokenException;
 
 import javax.crypto.SecretKey;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.UUID;
-
-import static org.yaml.snakeyaml.tokens.Token.ID.Key;
 
 @Log
 @Service
@@ -29,10 +25,10 @@ public class JwtProvider {
     public static final String TOKEN_HEADER = "Authorizacion";
     public static final String TOKEN_PREFIX = "Bearer";
 
-    @Value("${jwt.secret=secretoiberico}")
+    @Value("${jwt.secret}")
     private String jwtSecret;
 
-    @Value("${jwt.duraction=1}")
+    @Value("${jwt.duration}")
     private int jfwLifeInDays;
 
     private JwtParser jwtParser;
