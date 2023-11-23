@@ -76,7 +76,6 @@ public class SecurityConfig {
                         .requestMatchers(antMatcher("/auth/register/sanitary")).hasRole("SANITARY")
                         .anyRequest().authenticated());
 
-
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
         http.headers((headers) -> headers
