@@ -14,7 +14,7 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
 
     @Query("""
-            select p.dependients.id.toString() from Patient p
+            select b.id.toString() from Patient a join fetch a.dependients as b where a.id.toString() = ?1
             """)
     Optional<List<String>> findAllDependentsUUIDByResponsableUUID(String uuid);
 
