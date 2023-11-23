@@ -2,9 +2,12 @@ package com.salesianos.triana.VaxConnectApi.administration.service;
 
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETLastVaccinesAdministratedDTO;
 import com.salesianos.triana.VaxConnectApi.administration.repo.AdministrationRepository;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.service.CalendarMomentService;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import javax.swing.text.html.Option;
@@ -19,6 +22,15 @@ public class AdministrationService {
 
     private final AdministrationRepository repo;
     private final PatientService patientService;
+    private final CalendarMomentService calendarMomentService;
+
+    @Autowired
+    public AdministrationService(@Lazy CalendarMomentService calendarMomentService, @Lazy PatientService patientService, @Lazy AdministrationRepository repo) {
+        this.calendarMomentService = calendarMomentService;
+        this.repo = repo;
+        this.patientService = patientService;
+    }
+
 
 
     public List<GETLastVaccinesAdministratedDTO> findLastVaccineImplementedByUserId (UUID userID){
@@ -28,7 +40,7 @@ public class AdministrationService {
             if(!patient.get().getDependients().isEmpty()){
                 return findAllLastVaccineImplementedByUserId(patient.get());
             }else{
-                return repo.findLastVaccineImplementedByUserId(
+                return repo.findLastVaccineImplementedByUsermail(
                         patient.get().getEmail())
                         .stream()
                         .sorted(
@@ -45,11 +57,11 @@ public class AdministrationService {
     public List<GETLastVaccinesAdministratedDTO> findAllLastVaccineImplementedByUserId(Patient patient) {
 
         Optional<List<String>> listaUuid = patientService.findAllDependentsUUIDByResponsableUUID(patient.getEmail());
-        List<GETLastVaccinesAdministratedDTO> list = repo.findLastVaccineImplementedByUserId(patient.getEmail());
+        List<GETLastVaccinesAdministratedDTO> list = repo.findLastVaccineImplementedByUsermail(patient.getEmail());
 
         if(listaUuid.isPresent()){
             for (String dependientUuid:listaUuid.get()) {
-                list.addAll(repo.findLastVaccineImplementedByUserId(dependientUuid));
+                list.addAll(repo.findLastVaccineImplementedByUsermail(dependientUuid));
             }
             return list.stream()
                     .sorted(
@@ -62,5 +74,17 @@ public class AdministrationService {
         }
     }
 
+    public List<UUID> getIdOfCalendarMomentNotAdministrated(String email){
+
+        List<UUID> cmAdminIds =repo.findIdsOfCalendarsMomentsWhoAreImplementedByPatientEmail(email);
+        List<UUID> allCmIds = calendarMomentService.findAllIdOfCalendarsMoments();
+
+        allCmIds.removeAll(cmAdminIds);
+
+        return allCmIds;
+
+
+
+    }
 
 }

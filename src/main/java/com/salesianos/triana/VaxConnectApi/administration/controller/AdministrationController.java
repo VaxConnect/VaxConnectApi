@@ -21,14 +21,7 @@ public class AdministrationController {
 
     private final AdministrationService service;
 
-    /*
-    * I wll continue asking for the permision error that trows this -> {
-    "status": "UNAUTHORIZED",
-    "message": "Full authentication is required to access this resource",
-    "path": "/patient/administration/findLastVaccineImplementedByUserId",
-    "dateTime": "23/11/2023 10:32:29"
-    } now I'm focus on error and validation implementation.
-    * */
+
     @GetMapping("/findLastVaccineImplementedByUserId/")
     public ResponseEntity<List<GETLastVaccinesAdministratedDTO>> findLastVaccineImplementedByUserId (@AuthenticationPrincipal Patient patient){
             return ResponseEntity.status(200).body(service.findLastVaccineImplementedByUserId(patient.getId()));
