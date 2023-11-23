@@ -34,7 +34,7 @@ public class Administration {
     private String notes;
 
     @Column(name = "patient_uuid")
-    private String PatientUUID;
+    private String patientUUID;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "calendar_moment_id", nullable = false)
