@@ -87,12 +87,6 @@ public class JwtProvider {
             throw new JwtTokenException(ex.getMessage());
         }
 
-
     }
-
-
-
-
-
 
 }
