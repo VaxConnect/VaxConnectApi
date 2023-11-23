@@ -1,8 +1,11 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
 import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
+import com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients;
+import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
+import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
 import com.salesianos.triana.VaxConnectApi.user.repo.SanitaryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,6 +23,7 @@ import java.util.Optional;
 public class SanitaryService {
     private final PasswordEncoder passwordEncoder;
     private final SanitaryRepository sanitaryRepository;
+    private final PatientRepository patientRepository;
 
     public Sanitary createSanitary (CreateUserRequest createUserRequest, EnumSet<UserRole>roles){
     if (sanitaryRepository.existsByEmailIgnoreCase(createUserRequest.email())){
@@ -36,6 +40,11 @@ public class SanitaryService {
             .build();
     return sanitaryRepository.save(sanitary);
 
+
+    }
+    public List<GetListYoungestPatients> listYoungestPatients(){
+
+         return patientRepository.findYoungPatient();
 
     }
     public List<Sanitary> findAll(){

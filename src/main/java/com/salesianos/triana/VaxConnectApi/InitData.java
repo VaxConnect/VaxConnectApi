@@ -33,7 +33,7 @@ public class InitData {
                 .email("manolo@gamil.com")
                 .name("manolo")
                 .fotoUrl("foto.url")
-                .birthDate(LocalDate.of(2004,10,12))
+                .birthDate(LocalDate.of(1990,10,12))
                 .lastName("manoles")
                 .password(passwordEncoder.encode("12345678"))
                 .phoneNumber(123456789)
@@ -45,6 +45,57 @@ public class InitData {
                 .build();
 
         patientRepository.save(patient);
+        Patient patient1 = Patient.builder()
+                .dni("123456789")
+                .email("a@gamil.com")
+                .name("a")
+                .fotoUrl("foto.url")
+                .birthDate(LocalDate.of(2004,10,12))
+                .lastName("manoles")
+                .password(passwordEncoder.encode("12345678"))
+                .phoneNumber(123456789)
+                .accountNonLocked(true)
+                .accountNonExpired(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .roles(EnumSet.of(UserRole.PATIENT))
+                .build();
+
+        patientRepository.save(patient1);
+        Patient patient2 = Patient.builder()
+                .dni("123456789")
+                .email("o@gamil.com")
+                .name("o")
+                .fotoUrl("foto.url")
+                .birthDate(LocalDate.of(2001,10,12))
+                .lastName("manoles")
+                .password(passwordEncoder.encode("12345678"))
+                .phoneNumber(123456789)
+                .accountNonLocked(true)
+                .accountNonExpired(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .roles(EnumSet.of(UserRole.PATIENT))
+                .build();
+
+        patientRepository.save(patient2);
+        Patient patient3 = Patient.builder()
+                .dni("123456789")
+                .email("m@gamil.com")
+                .name("m")
+                .fotoUrl("foto.url")
+                .birthDate(LocalDate.of(2011,10,12))
+                .lastName("manoles")
+                .password(passwordEncoder.encode("12345678"))
+                .phoneNumber(123456789)
+                .accountNonLocked(true)
+                .accountNonExpired(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .roles(EnumSet.of(UserRole.PATIENT))
+                .build();
+
+        patientRepository.save(patient3);
         Sanitary sanitary = Sanitary.builder()
                 .dni("12344A")
                 .email("angel@gmail.com")

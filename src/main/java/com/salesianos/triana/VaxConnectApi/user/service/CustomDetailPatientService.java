@@ -1,10 +1,12 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Primary;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
 @Service("patientDetailsService")
 @RequiredArgsConstructor
 public class CustomDetailPatientService implements UserDetailsService {

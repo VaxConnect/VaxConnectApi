@@ -91,6 +91,9 @@ public class SecurityConfig {
                 .requestMatchers(
                         antMatcher("/h2-console/**"),
                         antMatcher("/auth/register"),
+                        antMatcher("/auth/register/sanitary"),//cambiar linea 95
+
+                        antMatcher("/auth/login/sanitary"),
                         antMatcher("/auth/login"),
                         antMatcher("/error")
                 ));
