@@ -7,6 +7,7 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -23,16 +24,17 @@ public class Administration {
     @GenericGenerator(name = "UUID", type = org.hibernate.id.UUIDGenerator.class)
     private UUID id;
 
-    private LocalDate date;
 
+    private LocalDateTime date;
+
+    @Column(name="age_to_administrate")
     //months
     private int ageToAdministrate;
 
     private String notes;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "patient_id")
-    private Patient patient;
+    @Column(name = "patient_uuid")
+    private String patientUUID;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "calendar_moment_id", nullable = false)

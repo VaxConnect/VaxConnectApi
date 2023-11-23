@@ -7,10 +7,7 @@ import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.LinkedHashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 
 @Entity
 @Getter
@@ -21,24 +18,13 @@ import java.util.UUID;
 @SuperBuilder
 public class Patient extends User {
 
-
-
     @ManyToMany
-    @JoinTable(name = "tbl_patients",
-    joinColumns = @JoinColumn(name = "responsable"),
-    inverseJoinColumns = @JoinColumn(name = "dependient"))
-    private List<Patient> dependients;
+    @JoinTable(name = "tbl_patient_dependients",
+            joinColumns = @JoinColumn(name = "responsable_id"),
+            inverseJoinColumns = @JoinColumn(name = "dependient_id"))
+    private List<Patient> dependients = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "tbl_patients",
-            joinColumns = @JoinColumn(name = "responsable"),
-            inverseJoinColumns = @JoinColumn(name = "dependient"))
+    @ManyToMany(mappedBy = "dependients")
     private List<Patient> inChargeOf;
-
-    @OneToMany(mappedBy = "patient", orphanRemoval = true)
-    private Set<Administration> administrations = new LinkedHashSet<>();
-
-
-
 
 }

@@ -13,14 +13,19 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
     boolean existsByEmailIgnoreCase(String email);
 
+
+    @Query("select b.id from Patient a join a.dependients b where a.id = ?1")
+    Optional<List<String>> findAllDependentsUUIDByResponsableUUID(String uuid);
+
+
     Optional<Patient> findFirstByEmail(String email);
     @Query("""
-            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients(p.name, p.lastName, p.birthDate) 
-            FROM Patient p 
-            ORDER BY p.birthDate 
-            DESC limit 4
-            """)
+    SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients(p.name, p.lastName, p.birthDate) 
+    FROM Patient p 
+    ORDER BY p.birthDate DESC limit 4
+    """)
     List<GetListYoungestPatients> findYoungPatient();
+
 
 
 

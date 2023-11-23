@@ -33,8 +33,8 @@ public class CalendarMoment {
 
     private String discriminants;
 
-    @OneToMany
-    @JoinColumn(name = "calendar_moment_id", nullable = false)
-    private Set<Vacune> vacunes = new LinkedHashSet<>();
+    @ManyToOne
+    @JoinColumn(name = "vacune_id")
+    private Vacune vacune;
 
 }

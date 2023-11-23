@@ -52,7 +52,29 @@ public class PatientService {
         return patientRepository.findById(id);
     }
 
-    public Optional<Patient>findByEmail(String email){
+    public boolean existsById (String id){
+
+        if(patientRepository.existsById(UUID.fromString(id)))
+            return true;
+
+        return false;
+
+    }
+
+    public Optional<List<String>> findAllDependentsUUIDByResponsableUUID (String uuid){
+        return patientRepository.findAllDependentsUUIDByResponsableUUID(uuid);
+    }
+
+    public boolean hasDependients(String uuid){
+
+        Optional<Patient> patient = patientRepository.findById(UUID.fromString(uuid));
+
+        return patient.filter(value -> !value.getDependients().isEmpty()).isPresent();
+
+
+    }
+
+   public Optional<Patient>findByEmail(String email){
         return patientRepository.findFirstByEmail(email);
     }
 
