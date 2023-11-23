@@ -1,14 +1,18 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
 import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
+import com.salesianos.triana.VaxConnectApi.user.dto.GetPatientByIdDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
 import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
+
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -52,6 +56,7 @@ public class PatientService {
         return patientRepository.findById(id);
     }
 
+
     public Optional<Patient>findByEmail(String email){
         return patientRepository.findFirstByEmail(email);
     }
@@ -71,6 +76,16 @@ public class PatientService {
 
     public boolean passwordMatch(Patient patient, String clearPassword) {
         return passwordEncoder.matches(clearPassword, patient.getPassword());
+    }
+
+
+
+
+    public Optional<GetPatientByIdDto>findLoggedById(UUID id){
+        return patientRepository.findLoggedPatientById(id);
+    }
+    public Page<GetPatientByIdDto>findAllPatients(Pageable p){
+        return patientRepository.findAllPatients(p);
     }
 
 }
