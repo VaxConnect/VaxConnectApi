@@ -2,6 +2,7 @@ package com.salesianos.triana.VaxConnectApi.user.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
+import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,15 @@ public class UserResponse {
                 .build();
 
 
+    }
+    public static UserResponse fromSanitary(Sanitary sanitary){
+        return UserResponse.builder()
+                .id(sanitary.getId().toString())
+                .mail(sanitary.getEmail())
+                .avatar(sanitary.getFotoUrl())
+                .fullName(sanitary.getName().concat(" "+sanitary.getLastName()))
+                .createdAt(sanitary.getCreatedAt())
+                .build();
     }
 
 }
