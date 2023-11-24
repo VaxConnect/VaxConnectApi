@@ -21,7 +21,7 @@ public class CalendarMomentController {
 
     @GetMapping("/findNextVaccines/")
     public ResponseEntity<List<GETNextVaccinesToAdministrateDTO>> findNextVaccines (@AuthenticationPrincipal Patient patient){
-        return ResponseEntity.status(200).body(calendarMomentService.getAllNextVaccinesToAdministrateDTOS(patient));
+        return ResponseEntity.status(200).body(calendarMomentService.getAllNextVaccinesToAdministrateDTOS(patient.getEmail()));
 
     }
 

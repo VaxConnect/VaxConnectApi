@@ -4,7 +4,10 @@ public record GETNextVaccinesToAdministrateDTO(
 
         String completeName,
 
-        String vaccineType
+        String vaccineType,
+
+        int month
+
 
 
         ) {

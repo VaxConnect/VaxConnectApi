@@ -28,14 +28,15 @@ public class CalendarMomentService {
         return repository.findAllIdOfCalendarMoments();
     }
 
-    public List<GETNextVaccinesToAdministrateDTO> getAllNextVaccinesToAdministrateDTOS (Patient patient){
+    public List<GETNextVaccinesToAdministrateDTO> getAllNextVaccinesToAdministrateDTOS (String email){
 
+        List<GETNextVaccinesToAdministrateDTO> list = getNextVaccinesToAdministrateDTOS(email);
+        Optional<Patient>patient = patientService.findByEmail(email);
 
-        List<GETNextVaccinesToAdministrateDTO> list = getNextVaccinesToAdministrateDTOS(patient.getEmail());
-        if(!patient.getDependients().isEmpty()){
-            Optional<List<String>>listDepEmails = patientService.findAllDependentsUUIDByResponsableUUID(patient.getEmail());
-            for (String email:listDepEmails.get()) {
-                list.addAll(getNextVaccinesToAdministrateDTOS(email));
+        if(!patient.get().getDependients().isEmpty()){
+            Optional<List<String>>listDepEmails = patientService.findAllDependentsUUIDByResponsableUUID(email);
+            for (String depEmail:listDepEmails.get()) {
+                list.addAll(getNextVaccinesToAdministrateDTOS(depEmail));
             }
 
         }
@@ -53,9 +54,7 @@ public class CalendarMomentService {
             for (UUID id :idsFromCm) {
                 list.add(repository.getNextVaccinesToAdministrateDTOFromCmId(id,patient.get().getEmail()));
             }
-            String monthToreveal = "month("+ChronoUnit.MONTHS.between(patient.get().getBirthDate(),LocalDate.now())+1 +")";
-            return list.stream().filter(x-> x.vaccineType().contains(monthToreveal)).collect(Collectors.toList());
-
+            return list.stream().filter(x-> x.month()==(ChronoUnit.MONTHS.between(patient.get().getBirthDate(),LocalDate.now())+1) ).collect(Collectors.toList());
         }else{
             return null;
         }
