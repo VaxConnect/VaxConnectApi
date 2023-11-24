@@ -3,6 +3,7 @@ package com.salesianos.triana.VaxConnectApi.administration.service;
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETLastVaccinesAdministratedDTO;
 import com.salesianos.triana.VaxConnectApi.administration.repo.AdministrationRepository;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.service.CalendarMomentService;
+import com.salesianos.triana.VaxConnectApi.message.Message;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -40,14 +41,18 @@ public class AdministrationService {
             if(!patient.get().getDependients().isEmpty()){
                 return findAllLastVaccineImplementedByUserId(patient.get());
             }else{
-                return repo.findLastVaccineImplementedByUsermail(
+                List<GETLastVaccinesAdministratedDTO> list =repo.findLastVaccineImplementedByUsermail(
                         patient.get().getEmail())
                         .stream()
                         .sorted(
                                 (x,y)->y.timeOfImplementation().compareTo(x.timeOfImplementation())
                         )
-                        .collect(Collectors.toList())
+                        .toList()
                         .subList(0,4);
+
+                    return list;
+
+
             }
         }
         return null;
@@ -68,6 +73,9 @@ public class AdministrationService {
                             (x,y)->y.timeOfImplementation().compareTo(x.timeOfImplementation())
                     ).collect(Collectors.toList())
                     .subList(0,4);
+
+
+
         }else{
             //make an error that tell U that there is something wrong in the code
             return null;
