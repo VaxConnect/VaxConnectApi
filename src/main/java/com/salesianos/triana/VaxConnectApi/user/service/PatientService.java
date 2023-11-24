@@ -103,8 +103,15 @@ public class PatientService {
     public Optional<GetPatientByIdDto>findLoggedById(UUID id){
         return patientRepository.findLoggedPatientById(id);
     }
+
+
     public Page<GetPatientByIdDto>findAllPatients(Pageable p){
         return patientRepository.findAllPatients(p);
     }
+    /*
+    public List<GetPatientByIdDto>findAllPatients(){
+        return patientRepository.findAllPatients();
+    }*/
+
 
 }

@@ -64,8 +64,16 @@ public class PatientController {
 
 
     }
+ /*
+    @GetMapping("/patient")
+    public ResponseEntity<List<GetPatientByIdDto>> getAll(){
+        List<GetPatientByIdDto> pagedResult = patientService.findAllPatients();
 
+        if (pagedResult.isEmpty())
+            return ResponseEntity.notFound().build();
 
+        return ResponseEntity.ok(pagedResult);
+    }*/
 
 
     @GetMapping("/patient")

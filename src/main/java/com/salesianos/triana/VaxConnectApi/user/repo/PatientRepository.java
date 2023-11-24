@@ -40,6 +40,7 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
 
 
+
     @Query("""
             SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetPatientByIdDto(
                     p.id,
@@ -49,6 +50,7 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
             FROM Patient p
            """)
     Page<GetPatientByIdDto> findAllPatients(Pageable pageable);
+
 
 
 }
