@@ -22,8 +22,8 @@ import java.util.UUID;
 public class JwtProvider {
 
     public static final String TOKEN_TYPE = "JWT";
-    public static final String TOKEN_HEADER = "Authorizacion";
-    public static final String TOKEN_PREFIX = "Bearer";
+    public static final String TOKEN_HEADER = "Authorization";
+    public static final String TOKEN_PREFIX = "Bearer ";
 
     @Value("${jwt.secret}")
     private String jwtSecret;
@@ -87,12 +87,6 @@ public class JwtProvider {
             throw new JwtTokenException(ex.getMessage());
         }
 
-
     }
-
-
-
-
-
 
 }

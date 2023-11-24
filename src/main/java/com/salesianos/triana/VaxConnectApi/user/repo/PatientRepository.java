@@ -8,13 +8,22 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
 public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
     boolean existsByEmailIgnoreCase(String email);
+
+
+    @Query("""
+    SELECT b.email FROM Patient a JOIN a.dependients b WHERE a.email = ?1
+""")
+    Optional<List<String>> findAllDependentsUUIDByResponsableUUID(String email);
+
+
+
 
     Optional<Patient> findFirstByEmail(String email);
 

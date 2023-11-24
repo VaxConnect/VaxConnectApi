@@ -73,9 +73,8 @@ public class SecurityConfig {
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests((authz) -> authz
                         .requestMatchers(antMatcher("/patient/**")).hasRole("PATIENT")
-                        .requestMatchers(antMatcher("/auth/register/sanitary")).hasRole("SANITARY")
+                        .requestMatchers(antMatcher("/sanitary/**")).hasRole("SANITARY")
                         .anyRequest().authenticated());
-
 
         http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
@@ -90,7 +89,6 @@ public class SecurityConfig {
         return (web -> web.ignoring()
                 .requestMatchers(
                         antMatcher("/h2-console/**"),
-                        antMatcher("/auth/register"),
                         antMatcher("/auth/login"),
                         antMatcher("/error")
                 ));
