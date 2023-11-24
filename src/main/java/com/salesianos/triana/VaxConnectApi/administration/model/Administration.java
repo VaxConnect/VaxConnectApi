@@ -33,8 +33,8 @@ public class Administration {
 
     private String notes;
 
-    @Column(name = "patient_uuid")
-    private String patientUUID;
+    @Column(name = "patient_email")
+    private String patientEmail;
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "calendar_moment_id", nullable = false)

@@ -8,7 +8,7 @@ public record GETLastVaccinesAdministratedDTO(
 
         String vaccineType,
 
-        String timeOfImplementation
+        LocalDateTime timeOfImplementation
 
 ) {
 }

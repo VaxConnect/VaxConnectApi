@@ -12,11 +12,26 @@ public interface AdministrationRepository extends JpaRepository<Administration, 
 
     @Query("""
             select new com.salesianos.triana.VaxConnectApi.administration.dto.GETLastVaccinesAdministratedDTO(
-            (select p.name || ' ' || p.lastName from Patient p where p.id = ?1),
-            a.calendarMoment.dosisType || a.calendarMoment.vacune.name,
-            a.calendarMoment.date.toString()
-            )from Administration a where a.patientUUID = ?1
+                (select p.name || ' ' || p.lastName from Patient p where p.email = ?1),
+                cm.dosisType || v.name,
+                a.date
+            ) from Administration a 
+            left join a.calendarMoment as cm
+            left join cm.vacune as v
+            where a.patientEmail = ?1
             """)
-    List<GETLastVaccinesAdministratedDTO> findLastVaccineImplementedByUserId(String userId);
+    List<GETLastVaccinesAdministratedDTO> findLastVaccineImplementedByUsermail(String email);
+
+    @Query("""
+            select cm.id 
+            from Administration a
+            left join a.calendarMoment as cm
+            where a.patientEmail = ?1
+            """)
+    List<UUID> findIdsOfCalendarsMomentsWhoAreImplementedByPatientEmail(String email);
+
 
     }
+
+
+

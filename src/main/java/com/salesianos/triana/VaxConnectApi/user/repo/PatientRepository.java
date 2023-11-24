@@ -4,6 +4,7 @@ import com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -14,8 +15,13 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
     boolean existsByEmailIgnoreCase(String email);
 
 
-    @Query("select b.id from Patient a join a.dependients b where a.id = ?1")
-    Optional<List<String>> findAllDependentsUUIDByResponsableUUID(String uuid);
+    @Query("""
+    SELECT b.email FROM Patient a JOIN a.dependients b WHERE a.email = ?1
+""")
+    Optional<List<String>> findAllDependentsUUIDByResponsableUUID(String email);
+
+
+
 
 
     Optional<Patient> findFirstByEmail(String email);

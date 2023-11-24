@@ -10,6 +10,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.EnumSet;
@@ -61,13 +62,13 @@ public class PatientService {
 
     }
 
-    public Optional<List<String>> findAllDependentsUUIDByResponsableUUID (String uuid){
-        return patientRepository.findAllDependentsUUIDByResponsableUUID(uuid);
+    public Optional<List<String>> findAllDependentsUUIDByResponsableUUID (String email){
+        return patientRepository.findAllDependentsUUIDByResponsableUUID(email);
     }
 
-    public boolean hasDependients(String uuid){
+    public boolean hasDependients(UUID uuid){
 
-        Optional<Patient> patient = patientRepository.findById(UUID.fromString(uuid));
+        Optional<Patient> patient = patientRepository.findById(uuid);
 
         return patient.filter(value -> !value.getDependients().isEmpty()).isPresent();
 
