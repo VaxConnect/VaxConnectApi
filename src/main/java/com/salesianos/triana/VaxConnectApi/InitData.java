@@ -188,7 +188,19 @@ public class InitData {
                 .build();
         patientRepository.save(patient8);
 
-
+        Sanitary sanitary1 = Sanitary.builder()
+                .dni("00000000")
+                .email("admin@admin.com")
+                .name("Admin")
+                .fotoUrl("https://admin.com/admin.jpg")
+                .birthDate(LocalDate.of(1975, 9, 30))
+                .lastName("Admin")
+                .password(passwordEncoder.encode("adminadmin"))
+                .phoneNumber(1234567890)
+                .roles(EnumSet.of(UserRole.SANITARY))
+                .puesto("Admin")
+                .build();
+        sanitaryRepository.save(sanitary1);
 
     }
 

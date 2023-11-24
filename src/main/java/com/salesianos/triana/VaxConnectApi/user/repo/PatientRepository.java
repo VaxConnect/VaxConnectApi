@@ -21,10 +21,8 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
     Optional<List<String>> findAllDependentsUUIDByResponsableUUID(String email);
 
 
-
-
-
     Optional<Patient> findFirstByEmail(String email);
+
     @Query("""
     SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients(p.name, p.lastName, p.birthDate) 
     FROM Patient p 

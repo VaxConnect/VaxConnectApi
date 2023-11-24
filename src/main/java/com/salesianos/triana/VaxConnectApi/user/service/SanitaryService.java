@@ -17,10 +17,12 @@ import java.time.LocalDateTime;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
 public class SanitaryService {
+
     private final PasswordEncoder passwordEncoder;
     private final SanitaryRepository sanitaryRepository;
     private final PatientRepository patientRepository;
@@ -57,4 +59,7 @@ public class SanitaryService {
     public Optional<Sanitary> findByEmail(String email){
         return sanitaryRepository.findFirstByEmail(email);
     }
+
+    public Optional<Sanitary> findById(UUID id){return sanitaryRepository.findById(id);}
+
 }

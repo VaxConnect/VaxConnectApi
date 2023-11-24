@@ -2,7 +2,9 @@ package com.salesianos.triana.VaxConnectApi.security.jwt;
 
 import com.salesianos.triana.VaxConnectApi.security.errorhandling.JwtTokenException;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
+import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
+import com.salesianos.triana.VaxConnectApi.user.service.SanitaryService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -32,6 +34,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private final PatientService patientService;
 
     @Autowired
+    private final SanitaryService sanitaryService;
+
+    @Autowired
     private final JwtProvider jwtProvider;
 
     @Autowired
@@ -52,6 +57,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 Optional<Patient> result = patientService.findById(userId);
 
+
                 if (result.isPresent()) {
                     Patient patient = result.get();
 
@@ -65,6 +71,24 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                     authentication.setDetails(new WebAuthenticationDetails(request));
 
                     SecurityContextHolder.getContext().setAuthentication(authentication);
+                }else{
+                    Optional<Sanitary> resultSanitary = sanitaryService.findById(userId);
+
+                    if(resultSanitary.isPresent()){
+
+                    Sanitary sanitary = resultSanitary.get();
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(
+                                    sanitary,
+                                    null,
+                                    sanitary.getAuthorities()
+                            );
+
+                    authentication.setDetails(new WebAuthenticationDetails(request));
+
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+
+                    }
                 }
 
             }

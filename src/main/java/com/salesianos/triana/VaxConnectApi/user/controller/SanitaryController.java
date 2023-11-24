@@ -52,7 +52,7 @@ public class SanitaryController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(JwtUserResponse.ofSanitary(sanitary1,token));
     }
-    @GetMapping("/patients/young")
+    @GetMapping("/sanitary/patients/young")
     public ResponseEntity<List<GetListYoungestPatients>> listYoungestPatients(@AuthenticationPrincipal Sanitary sanitary){
     List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
     return ResponseEntity.ok(youngest);
