@@ -1,6 +1,6 @@
-package com.salesianos.triana.VaxConnectApi.Vacune.repo;
+package com.salesianos.triana.VaxConnectApi.vaccine.repo;
 
-import com.salesianos.triana.VaxConnectApi.Vacune.modal.Vacune;
+import com.salesianos.triana.VaxConnectApi.vaccine.modal.Vacune;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.UUID;

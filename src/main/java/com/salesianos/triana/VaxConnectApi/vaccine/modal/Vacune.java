@@ -1,4 +1,4 @@
-package com.salesianos.triana.VaxConnectApi.Vacune.modal;
+package com.salesianos.triana.VaxConnectApi.vaccine.modal;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

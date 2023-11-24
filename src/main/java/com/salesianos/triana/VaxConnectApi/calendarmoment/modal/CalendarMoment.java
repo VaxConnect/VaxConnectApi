@@ -1,12 +1,10 @@
 package com.salesianos.triana.VaxConnectApi.calendarmoment.modal;
 
-import com.salesianos.triana.VaxConnectApi.Vacune.modal.Vacune;
+import com.salesianos.triana.VaxConnectApi.vaccine.modal.Vacune;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
-import java.util.LinkedHashSet;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity
