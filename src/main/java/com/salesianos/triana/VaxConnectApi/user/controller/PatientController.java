@@ -64,17 +64,6 @@ public class PatientController {
 
 
     }
- /*
-    @GetMapping("/patient")
-    public ResponseEntity<List<GetPatientByIdDto>> getAll(){
-        List<GetPatientByIdDto> pagedResult = patientService.findAllPatients();
-
-        if (pagedResult.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(pagedResult);
-    }*/
-
 
     @GetMapping("/patient")
     public ResponseEntity<Page<GetPatientByIdDto>> getAll(@PageableDefault(page=0, size=5) Pageable pageable){
@@ -86,10 +75,17 @@ public class PatientController {
         return ResponseEntity.ok(pagedResult);
     }
 
-    @GetMapping("/patient/{id}")
-    public ResponseEntity<GetPatientByIdDto> getById(@AuthenticationPrincipal Patient patient) {
+    @GetMapping("/patient/logged")
+    public ResponseEntity<GetPatientByIdDto> getLoggedPatient(@AuthenticationPrincipal Patient patient) {
         return ResponseEntity.of(patientService.findLoggedById(patient.getId()));
         //¿Esta forma de devolver response entity esta bien?
-        //deberia recibir un paciente Dto
+        //deberia recibir un paciente Dto?
     }
+
+    @GetMapping("/patient/dependents")
+    public ResponseEntity<List<GetPatientByIdDto>> findDependentsByUserId(@AuthenticationPrincipal Patient patient) {
+        return ResponseEntity.of(patientService.findDependentsByUseId(patient.getId()));
+    }
+
+
 }

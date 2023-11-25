@@ -18,10 +18,9 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
 
     @Query("""
-    SELECT b.email FROM Patient a JOIN a.dependients b WHERE a.email = ?1
-""")
-    Optional<List<String>> findAllDependentsUUIDByResponsableUUID(String email);
-
+        SELECT b.email FROM Patient a JOIN a.dependients b WHERE a.email = ?1
+    """)
+    Optional<List<String>> findAllDependentsUUIDByResponsableEmail(String email);
 
 
 
@@ -31,7 +30,10 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
                 SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetPatientByIdDto(
                     p.id,
                     p.name,
-                    p.lastName
+                    p.lastName,
+                    p.birthDate,
+                    p.dni,
+                    p.email
                 )
                 FROM Patient p
                 WHERE p.id = ?1
@@ -40,17 +42,31 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
 
 
 
-
     @Query("""
             SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetPatientByIdDto(
                     p.id,
                     p.name,
-                    p.lastName
+                    p.lastName,
+                    p.birthDate,
+                    p.dni,
+                    p.email
                 )
             FROM Patient p
            """)
     Page<GetPatientByIdDto> findAllPatients(Pageable pageable);
 
-
-
+    @Query("""
+                SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetPatientByIdDto(
+                    d.id,
+                    d.name,
+                    d.lastName,
+                    d.birthDate,
+                    d.dni,
+                    d.email
+                )
+                FROM Patient p
+                LEFT JOIN p.dependients d
+                WHERE p.id = ?1
+            """)
+    Optional<List<GetPatientByIdDto>> findDependentsByUserId(UUID id);
 }
