@@ -1,12 +1,11 @@
 package com.salesianos.triana.VaxConnectApi.user.repo;
 
-import com.salesianos.triana.VaxConnectApi.user.dto.GetPatientByIdDto;
+import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +26,7 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
     Optional<Patient> findFirstByEmail(String email);
 
     @Query("""
-                SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetPatientByIdDto(
+                SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto(
                     p.id,
                     p.name,
                     p.lastName,
@@ -38,12 +37,12 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
                 FROM Patient p
                 WHERE p.id = ?1
             """)
-    Optional<GetPatientByIdDto> findLoggedPatientById(UUID id);
+    Optional<PatientBasicDataDto> findLoggedPatientById(UUID id);
 
 
 
     @Query("""
-            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetPatientByIdDto(
+            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto(
                     p.id,
                     p.name,
                     p.lastName,
@@ -53,10 +52,10 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
                 )
             FROM Patient p
            """)
-    Page<GetPatientByIdDto> findAllPatients(Pageable pageable);
+    Page<PatientBasicDataDto> findAllPatients(Pageable pageable);
 
     @Query("""
-                SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetPatientByIdDto(
+                SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto(
                     d.id,
                     d.name,
                     d.lastName,
@@ -68,5 +67,5 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
                 LEFT JOIN p.dependients d
                 WHERE p.id = ?1
             """)
-    Optional<List<GetPatientByIdDto>> findDependentsByUserId(UUID id);
+    Optional<List<PatientBasicDataDto>> findDependentsByUserId(UUID id);
 }

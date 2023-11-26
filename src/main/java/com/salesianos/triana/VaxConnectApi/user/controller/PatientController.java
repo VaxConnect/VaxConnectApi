@@ -3,6 +3,13 @@ package com.salesianos.triana.VaxConnectApi.user.controller;
 import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.ExampleObject;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -65,9 +72,69 @@ public class PatientController {
 
     }
 
+    @Operation(summary = "Get all patients")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode ="200",
+                    description = "Patients have been found",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientBasicDataDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "content": [
+                                                    {
+                                                        "id": "9fd2ebc1-6b09-44a3-9d3f-034c3a87e9cb",
+                                                        "name": "Clara",
+                                                        "lastName": "Gomez",
+                                                        "birthDate": "2000-06-25",
+                                                        "dni": "999888777",
+                                                        "email": "clara@gmail.com"
+                                                    },
+                                                    {
+                                                        "id": "7ae1b662-8f6c-40ad-979e-388ea9b1a1d0",
+                                                        "name": "Javier",
+                                                        "lastName": "Diaz",
+                                                        "birthDate": "1975-09-30",
+                                                        "dni": "111222333",
+                                                        "email": "javier@gmail.com"
+                                                    }
+                                                ],
+                                                "pageable": {
+                                                    "pageNumber": 1,
+                                                    "pageSize": 4,
+                                                    "sort": {
+                                                        "empty": true,
+                                                        "sorted": false,
+                                                        "unsorted": true
+                                                    },
+                                                    "offset": 4,
+                                                    "paged": true,
+                                                    "unpaged": false
+                                                },
+                                                "last": true,
+                                                "totalElements": 8,
+                                                "totalPages": 2,
+                                                "size": 4,
+                                                "number": 1,
+                                                "sort": {
+                                                    "empty": true,
+                                                    "sorted": false,
+                                                    "unsorted": true
+                                                },
+                                                "first": false,
+                                                "numberOfElements": 4,
+                                                "empty": false
+                                            }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "no patient has been found",
+                    content = @Content),
+    })
     @GetMapping("/patient")
-    public ResponseEntity<Page<GetPatientByIdDto>> getAll(@PageableDefault(page=0, size=5) Pageable pageable){
-        Page<GetPatientByIdDto> pagedResult = patientService.findAllPatients(pageable);
+    public ResponseEntity<Page<PatientBasicDataDto>> getAll(@PageableDefault(page=0, size=5) Pageable pageable){
+        Page<PatientBasicDataDto> pagedResult = patientService.findAllPatients(pageable);
 
         if (pagedResult.isEmpty())
             return ResponseEntity.notFound().build();
@@ -75,17 +142,71 @@ public class PatientController {
         return ResponseEntity.ok(pagedResult);
     }
 
+    @Operation(summary = "Get logged patient")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode ="200",
+                    description = "Patient have been found",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientBasicDataDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            {
+                                                "id": "744ae11c-3332-42ec-bb45-f2839eb06e21",
+                                                "name": "Maria",
+                                                "lastName": "Rodriguez",
+                                                "birthDate": "1985-08-22",
+                                                "dni": "987654321",
+                                                "email": "maria@gmail.com"
+                                            }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "the patient has not been found",
+                    content = @Content),
+    })
     @GetMapping("/patient/logged")
-    public ResponseEntity<GetPatientByIdDto> getLoggedPatient(@AuthenticationPrincipal Patient patient) {
+    public ResponseEntity<PatientBasicDataDto> getLoggedPatient(@AuthenticationPrincipal Patient patient) {
         return ResponseEntity.of(patientService.findLoggedById(patient.getId()));
         //¿Esta forma de devolver response entity esta bien?
         //deberia recibir un paciente Dto?
     }
 
+    @Operation(summary = "Get dependents of a patient by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode ="200",
+                    description = "Dependents have been found",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientBasicDataDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                            [
+                                                {
+                                                    "id": "e8885f71-6cf0-40de-af10-930d3d9a7f6c",
+                                                    "name": "Laura",
+                                                    "lastName": "Martinez Rodriguez",
+                                                    "birthDate": "2023-09-10",
+                                                    "dni": "111223344",
+                                                    "email": "laura@gmail.com"
+                                                },
+                                                {
+                                                    "id": "4e9f7244-1069-435b-bf74-dd3aff6e6932",
+                                                    "name": "Juan",
+                                                    "lastName": "Martinez Rodriguez",
+                                                    "birthDate": "2023-09-07",
+                                                    "dni": "555667788",
+                                                    "email": "juan@gmail.com"
+                                                }
+                                            ]
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "The patient does not have dependents",
+                    content = @Content),
+    })
     @GetMapping("/patient/dependents")
-    public ResponseEntity<List<GetPatientByIdDto>> findDependentsByUserId(@AuthenticationPrincipal Patient patient) {
+    public ResponseEntity<List<PatientBasicDataDto>> findDependentsByUserId(@AuthenticationPrincipal Patient patient) {
         return ResponseEntity.of(patientService.findDependentsByUseId(patient.getId()));
     }
-
-
 }
