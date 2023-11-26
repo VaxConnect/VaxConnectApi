@@ -16,4 +16,8 @@ public class VacuneService {
     public Page<GetAllVaccineDto> findAllVaccine(Pageable pageable) {
         return vacuneRepository.findAllVaccine(pageable);
     }
+
+    public Page<GetAllVaccineDto> findVaccineBySearchParameter(Pageable pageable, String name) {
+        return vacuneRepository.findVaccineBySearchParameter(pageable, name);
+    }
 }

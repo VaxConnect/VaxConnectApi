@@ -8,15 +8,16 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
 @RequestMapping("/vacune")
 public class VacuneController {
 
+    private final VacuneRepository vacuneRepository;
     private final VacuneService vacuneService;
 
     @GetMapping("/all")
@@ -27,5 +28,32 @@ public class VacuneController {
             return ResponseEntity.notFound().build();
 
         return ResponseEntity.ok(pagedResult);
+    }
+
+    @PostMapping("/info")
+    private ResponseEntity<GetAllVaccineDto> getVacuneById(@RequestBody UUID id) {
+        if(vacuneRepository.existsById(id))
+            return ResponseEntity.of(vacuneRepository.findVacuneById(id));
+        else
+            return ResponseEntity.notFound().build();
+    }
+
+    /*@GetMapping("/{id}")
+    private ResponseEntity<GetAllVaccineDto> getVacuneById(@RequestParam UUID id) {
+        if(vacuneRepository.existsById(id))
+            return ResponseEntity.of(vacuneRepository.findVacuneById(id));
+        else
+            return ResponseEntity.notFound().build();
+    }*/
+
+    @GetMapping("/search/{name}")
+    private ResponseEntity<Page<GetAllVaccineDto>> getVaccineBySearchParameter(@PageableDefault(page=0, size=10)Pageable pageable,
+                                                                               @RequestParam String name) {
+        Page<GetAllVaccineDto> pagedResult = vacuneService.findVaccineBySearchParameter(pageable, name);
+
+        if(pagedResult.isEmpty())
+            return ResponseEntity.notFound().build();
+        else
+            return ResponseEntity.ok(pagedResult);
     }
 }
