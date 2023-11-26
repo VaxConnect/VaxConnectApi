@@ -1,7 +1,10 @@
 package com.salesianos.triana.VaxConnectApi.user.repo;
 
+import com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
+import com.sun.security.auth.UnixNumericUserPrincipal;
+import io.swagger.v3.oas.models.media.UUIDSchema;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -68,4 +71,20 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
                 WHERE p.id = ?1
             """)
     Optional<List<PatientBasicDataDto>> findDependentsByUserId(UUID id);
+
+
+    @Query("""
+            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails(
+                p.name || p.lastName,
+                p.email,
+                p.dni,
+                p.birthDate,
+                p.phoneNumber,
+                p.fotoUrl
+            )
+            FROM Patient p
+            WHERE p.id = ?1
+            """)
+    Optional<GETUserProfileDetails> getUserProfileDetailsById(UUID id);
+
 }

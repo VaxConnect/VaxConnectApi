@@ -1,6 +1,7 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
 import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
+import com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
@@ -69,6 +70,14 @@ public class PatientService {
 
         return patient.filter(value -> !value.getDependients().isEmpty()).isPresent();
 
+
+    }
+
+    public GETUserProfileDetails getUserProfileDetailsDTO (UUID uuid ){
+
+        Optional<GETUserProfileDetails> patientDTO = patientRepository.getUserProfileDetailsById(uuid);
+
+        return patientDTO.orElse(null);
 
     }
 
