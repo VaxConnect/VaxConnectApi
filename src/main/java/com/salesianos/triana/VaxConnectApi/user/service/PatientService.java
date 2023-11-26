@@ -1,22 +1,20 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
 import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
+import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
 import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -52,7 +50,6 @@ public class PatientService {
     public Optional<Patient>findById(UUID id){
         return patientRepository.findById(id);
     }
-
     public boolean existsById (String id){
 
         if(patientRepository.existsById(UUID.fromString(id)))
@@ -63,7 +60,7 @@ public class PatientService {
     }
 
     public Optional<List<String>> findAllDependentsUUIDByResponsableUUID (String email){
-        return patientRepository.findAllDependentsUUIDByResponsableUUID(email);
+        return patientRepository.findAllDependentsUUIDByResponsableEmail(email);
     }
 
     public boolean hasDependients(UUID uuid){
@@ -95,5 +92,19 @@ public class PatientService {
     public boolean passwordMatch(Patient patient, String clearPassword) {
         return passwordEncoder.matches(clearPassword, patient.getPassword());
     }
+
+
+
+    public Page<PatientBasicDataDto>findAllPatients(Pageable p){
+        return patientRepository.findAllPatients(p);
+    }
+
+    public Optional<PatientBasicDataDto>findLoggedById(UUID id){
+        return patientRepository.findLoggedPatientById(id);
+    }
+    public Optional<List<PatientBasicDataDto>>findDependentsByUseId(UUID id){
+        return patientRepository.findDependentsByUserId(id);
+    }
+
 
 }
