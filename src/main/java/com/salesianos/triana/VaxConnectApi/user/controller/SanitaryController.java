@@ -48,6 +48,11 @@ public class SanitaryController {
     List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
     return ResponseEntity.ok(youngest);
     }
+    @GetMapping("/sanitary/vaccines/grafic")
+    public ResponseEntity<List<GetVaccinesMoreAdministrated>> VaccinesMoreAdministrated(@AuthenticationPrincipal Sanitary sanitary){
+        List<GetVaccinesMoreAdministrated> getVaccinesMoreAdministrateds = sanitaryService.VaccinesMoreAdministrated();
+        return ResponseEntity.ok(getVaccinesMoreAdministrateds);
+    }
     @PostMapping("/auth/register/sanitary")
     public ResponseEntity<UserResponse> createSanitary(@RequestBody CreateUserRequest createUserRequest){
         Sanitary sanitary = sanitaryService.createSanitaryWithRole(createUserRequest);

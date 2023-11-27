@@ -31,7 +31,7 @@ public class InitData {
 
         Patient patient = Patient.builder()
                 .dni("123456789")
-                .email("manolo@gamil.com")
+                .email("manolo@gmail.com")
                 .name("manolo")
                 .fotoUrl("foto.url")
                 .birthDate(LocalDate.of(1990,10,12))

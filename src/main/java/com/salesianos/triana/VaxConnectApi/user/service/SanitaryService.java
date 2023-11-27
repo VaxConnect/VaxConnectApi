@@ -1,9 +1,7 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
-import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
-import com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients;
-import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
-import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
+import com.salesianos.triana.VaxConnectApi.administration.model.Administration;
+import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
@@ -19,10 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -66,6 +61,10 @@ public class SanitaryService {
     public Sanitary createSanitaryWithRole(CreateUserRequest createUserRequest){
         return createSanitary(createUserRequest,EnumSet.of(UserRole.SANITARY));
     }
+    public List<GetVaccinesMoreAdministrated> VaccinesMoreAdministrated(){
+        return sanitaryRepository.getVaccinesMoreAdministrated();
+    }
+
 
 
 
