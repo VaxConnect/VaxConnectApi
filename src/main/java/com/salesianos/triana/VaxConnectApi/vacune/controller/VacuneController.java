@@ -36,15 +36,6 @@ public class VacuneController {
         return vacuneService.findVacuneById(idValido);
     }
 
-    /*@GetMapping("/{id}")
-    private ResponseEntity<GetAllVaccineDto> getVacuneById(@RequestParam String id) {
-        UUID idValido = UUID.fromString(id);
-        if(vacuneRepository.existsById(idValido))
-            return ResponseEntity.of(vacuneRepository.findVacuneById(idValido));
-        else
-            return ResponseEntity.notFound().build();
-    }*/
-
     @GetMapping("/search/{name}")
     private ResponseEntity<Page<GetAllVaccineDto>> getVaccineBySearchParameter(@PageableDefault(page=0, size=10)Pageable pageable,
                                                                                @RequestParam String name) {
