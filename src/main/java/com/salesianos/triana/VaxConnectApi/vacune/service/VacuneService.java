@@ -20,8 +20,13 @@ public class VacuneService {
         return vacuneRepository.findAllVaccine(pageable);
     }
 
-    public Page<GetAllVaccineDto> findVaccineBySearchParameter(Pageable pageable, String name) {
-        return vacuneRepository.findVaccineBySearchParameter(pageable, name);
+    public ResponseEntity<Page<GetAllVaccineDto>> findVaccineBySearchParameter(Pageable pageable, String name) {
+        Page<GetAllVaccineDto> response =  vacuneRepository.findVaccineBySearchParameter(pageable, name);
+
+        if(response.isEmpty())
+            return ResponseEntity.notFound().build();
+        else
+            return ResponseEntity.ok(response);
     }
 
     public ResponseEntity<GetAllVaccineDto> findVacuneById(UUID id) {
