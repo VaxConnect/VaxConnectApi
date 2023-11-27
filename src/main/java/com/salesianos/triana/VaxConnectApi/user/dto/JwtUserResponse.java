@@ -3,6 +3,7 @@ package com.salesianos.triana.VaxConnectApi.user.dto;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
+import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -32,6 +33,11 @@ public class JwtUserResponse extends UserResponse{
         result.setToken(token);
         return result;
 
+    }
+    public static JwtUserResponse ofSanitary (Sanitary sanitary, String token){
+        JwtUserResponse response = new JwtUserResponse(UserResponse.fromSanitary(sanitary));
+        response.setToken(token);
+        return response;
     }
 
 }

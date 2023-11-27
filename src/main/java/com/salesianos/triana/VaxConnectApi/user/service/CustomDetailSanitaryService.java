@@ -6,20 +6,15 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-@Service("patientDetailsService")
+@Primary
+@Service("sanitaryDetailService")
 @RequiredArgsConstructor
-public class CustomDetailPatientService implements UserDetailsService {
-
-    private final PatientService patientService;
+public class CustomDetailSanitaryService implements UserDetailsService {
+    private final SanitaryService sanitaryService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return  patientService.findByEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("No user with email: " +  email));
+        return sanitaryService.findByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("No user with this email"+email));
     }
-
-
-
-
 }

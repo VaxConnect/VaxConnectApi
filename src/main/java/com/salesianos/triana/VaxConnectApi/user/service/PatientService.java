@@ -72,7 +72,7 @@ public class PatientService {
 
     }
 
-    public Optional<Patient>findByEmail(String email){
+   public Optional<Patient>findByEmail(String email){
         return patientRepository.findFirstByEmail(email);
     }
 
