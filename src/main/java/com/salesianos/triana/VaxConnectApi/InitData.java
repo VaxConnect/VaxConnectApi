@@ -1,8 +1,10 @@
 package com.salesianos.triana.VaxConnectApi;
 
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
+import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
 import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
+import com.salesianos.triana.VaxConnectApi.user.repo.SanitaryRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -19,7 +21,7 @@ import java.util.Set;
 public class InitData {
 
     private final PatientRepository patientRepository;
-
+    private final SanitaryRepository sanitaryRepository;
     private final PasswordEncoder passwordEncoder;
 
     @PostConstruct
@@ -41,6 +43,21 @@ public class InitData {
 
         patientRepository.save(patient);
 
+        Patient patient2 = Patient.builder()
+                .dni("123456789")
+                .email("o@gamil.com")
+                .name("o")
+                .fotoUrl("foto.url")
+                .birthDate(LocalDate.of(2001,10,12))
+                .lastName("manoles")
+                .password(passwordEncoder.encode("12345678"))
+                .phoneNumber(123456789)
+                .accountNonLocked(true)
+                .accountNonExpired(true)
+                .credentialsNonExpired(true)
+                .enabled(true)
+                .roles(EnumSet.of(UserRole.PATIENT))
+                .build();
 
 
         Patient patient3 = Patient.builder()
@@ -56,6 +73,7 @@ public class InitData {
                 .dependients(new ArrayList<>()) // Initialize the dependients list
                 .build();
         patientRepository.save(patient3);
+
 
         // Example 4
         Patient patient4 = Patient.builder()
@@ -142,6 +160,19 @@ public class InitData {
                 .build();
         patientRepository.save(patient8);
 
+        Sanitary sanitary1 = Sanitary.builder()
+                .dni("00000000")
+                .email("admin@admin.com")
+                .name("Admin")
+                .fotoUrl("https://admin.com/admin.jpg")
+                .birthDate(LocalDate.of(1975, 9, 30))
+                .lastName("Admin")
+                .password(passwordEncoder.encode("adminadmin"))
+                .phoneNumber(1234567890)
+                .roles(EnumSet.of(UserRole.SANITARY))
+                .puesto("Admin")
+                .build();
+        sanitaryRepository.save(sanitary1);
 
 
     }
