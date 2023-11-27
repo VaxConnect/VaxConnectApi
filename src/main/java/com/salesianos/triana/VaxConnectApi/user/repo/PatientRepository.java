@@ -21,7 +21,7 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
     @Query("""
         SELECT b.email FROM Patient a JOIN a.dependients b WHERE a.email = ?1
     """)
-    Optional<List<String>> findAllDependentsUUIDByResponsableEmail(String email);
+    Optional<List<String>> findAllDependentsEmailByResponsableEmail(String email);
 
     Optional<Patient> findFirstByEmail(String email);
 

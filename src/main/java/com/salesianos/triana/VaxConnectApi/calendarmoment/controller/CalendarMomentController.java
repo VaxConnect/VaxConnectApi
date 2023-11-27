@@ -1,6 +1,7 @@
 package com.salesianos.triana.VaxConnectApi.calendarmoment.controller;
 
 import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETNextVaccinesToAdministrateDTO;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETVaccinesNotAdministratedDTO;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.service.CalendarMomentService;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,10 @@ public class CalendarMomentController {
     public ResponseEntity<List<GETNextVaccinesToAdministrateDTO>> findNextVaccines (@AuthenticationPrincipal Patient patient){
         return ResponseEntity.status(200).body(calendarMomentService.getAllNextVaccinesToAdministrateDTOS(patient.getEmail()));
 
+    }
+    @GetMapping("/findVaccinesNotAdministrated/")
+    public ResponseEntity<List<GETVaccinesNotAdministratedDTO>> findVaccinesNotAdministrated(@AuthenticationPrincipal Patient patient){
+        return ResponseEntity.status(200).body(calendarMomentService.getAllVaccinesNotImplemented(patient.getId()));
     }
 
 

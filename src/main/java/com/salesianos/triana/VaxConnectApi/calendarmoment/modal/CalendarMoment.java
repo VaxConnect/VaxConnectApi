@@ -31,7 +31,7 @@ public class CalendarMoment {
 
     private String discriminants;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "vacune_id")
     private Vacune vacune;
 

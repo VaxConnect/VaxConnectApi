@@ -60,8 +60,8 @@ public class PatientService {
 
     }
 
-    public Optional<List<String>> findAllDependentsUUIDByResponsableUUID (String email){
-        return patientRepository.findAllDependentsUUIDByResponsableEmail(email);
+    public Optional<List<String>> findAllDependentsEmailByResponsableUUID (String email){
+        return patientRepository.findAllDependentsEmailByResponsableEmail(email);
     }
 
     public boolean hasDependients(UUID uuid){

@@ -1,9 +1,10 @@
 package com.salesianos.triana.VaxConnectApi.administration.service;
 
+import com.salesianos.triana.VaxConnectApi.administration.dto.GETAllVaccinesImplementedDTO;
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETLastVaccinesAdministratedDTO;
+import com.salesianos.triana.VaxConnectApi.administration.dto.GETPatientCalendarDTO;
 import com.salesianos.triana.VaxConnectApi.administration.repo.AdministrationRepository;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.service.CalendarMomentService;
-import com.salesianos.triana.VaxConnectApi.message.Message;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +12,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
-import javax.swing.text.html.Option;
+import java.time.LocalDate;
+import java.time.Month;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -61,11 +65,11 @@ public class AdministrationService {
 
     public List<GETLastVaccinesAdministratedDTO> findAllLastVaccineImplementedByUserId(Patient patient) {
 
-        Optional<List<String>> listaUuid = patientService.findAllDependentsUUIDByResponsableUUID(patient.getEmail());
+        Optional<List<String>> listaEmail = patientService.findAllDependentsEmailByResponsableUUID(patient.getEmail());
         List<GETLastVaccinesAdministratedDTO> list = repo.findLastVaccineImplementedByUsermail(patient.getEmail());
 
-        if(listaUuid.isPresent()){
-            for (String dependientUuid:listaUuid.get()) {
+        if(listaEmail.isPresent()){
+            for (String dependientUuid:listaEmail.get()) {
                 list.addAll(repo.findLastVaccineImplementedByUsermail(dependientUuid));
             }
             return list.stream()
@@ -90,6 +94,54 @@ public class AdministrationService {
         allCmIds.removeAll(cmAdminIds);
 
         return allCmIds;
+
+    }
+
+    public List<GETAllVaccinesImplementedDTO> getAllVaccinesImplementedDTO  (UUID userID){
+
+        Optional<Patient> patient = patientService.findById(userID);
+        return patient.map(value -> repo.findAllVaccinesImplementedByUserEmail(value.getEmail())).orElse(null);
+    }
+
+    public List<GETPatientCalendarDTO> getFamilyCalendar (UUID userId){
+        Optional<Patient> patient = patientService.findById(userId);
+
+        if(patient.isPresent()){
+            GETPatientCalendarDTO ownCalendar = new GETPatientCalendarDTO(
+                    patient.get().getId(),
+                    patient.get().getName().concat(" "+ patient.get().getLastName()),
+                    String.valueOf(ChronoUnit.MONTHS.between(patient.get().getBirthDate(), LocalDate.now())),
+                    getAllVaccinesImplementedDTO(patient.get().getId()),
+                    calendarMomentService.getAllVaccinesNotImplemented(patient.get().getId())
+            );
+
+            List<GETPatientCalendarDTO> calendar = new ArrayList<>();
+            calendar.add(ownCalendar);
+            if(patientService.hasDependients(userId)){
+
+                Optional<List<String>> listaEmail = patientService.findAllDependentsEmailByResponsableUUID(patient.get().getEmail());
+
+                for (String email: listaEmail.get()){
+
+                    Optional<Patient> patientFor = patientService.findByEmail(email);
+
+                    calendar.add(new GETPatientCalendarDTO(
+                            patientFor.get().getId(),
+                            patientFor.get().getName().concat(" "+ patientFor.get().getLastName()),
+                            String.valueOf(ChronoUnit.MONTHS.between(patientFor.get().getBirthDate(), LocalDate.now())),
+                            getAllVaccinesImplementedDTO(patientFor.get().getId()),
+                            calendarMomentService.getAllVaccinesNotImplemented(patientFor.get().getId())
+                    ));
+
+                }
+
+            }
+
+            return calendar;
+
+        }else{
+            return null;
+        }
 
 
 
