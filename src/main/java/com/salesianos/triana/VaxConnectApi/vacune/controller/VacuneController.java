@@ -30,18 +30,17 @@ public class VacuneController {
         return ResponseEntity.ok(pagedResult);
     }
 
-    @PostMapping("/info")
-    private ResponseEntity<GetAllVaccineDto> getVacuneById(@RequestBody UUID id) {
-        if(vacuneRepository.existsById(id))
-            return ResponseEntity.of(vacuneRepository.findVacuneById(id));
-        else
-            return ResponseEntity.notFound().build();
+    @GetMapping("/info/{id}")
+    private ResponseEntity<GetAllVaccineDto> getVacuneById(@PathVariable String id) {
+        UUID idValido = UUID.fromString(id);
+        return vacuneService.findVacuneById(idValido);
     }
 
     /*@GetMapping("/{id}")
-    private ResponseEntity<GetAllVaccineDto> getVacuneById(@RequestParam UUID id) {
-        if(vacuneRepository.existsById(id))
-            return ResponseEntity.of(vacuneRepository.findVacuneById(id));
+    private ResponseEntity<GetAllVaccineDto> getVacuneById(@RequestParam String id) {
+        UUID idValido = UUID.fromString(id);
+        if(vacuneRepository.existsById(idValido))
+            return ResponseEntity.of(vacuneRepository.findVacuneById(idValido));
         else
             return ResponseEntity.notFound().build();
     }*/
