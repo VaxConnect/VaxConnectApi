@@ -72,75 +72,7 @@ public class PatientController {
 
     }
 
-    @Operation(summary = "Get all patients")
-    @ApiResponses(value = {
-            @ApiResponse(responseCode ="200",
-                    description = "Patients have been found",
-                    content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = PatientBasicDataDto.class)),
-                            examples = {@ExampleObject(
-                                    value = """
-                                            {
-                                                "content": [
-                                                    {
-                                                        "id": "9fd2ebc1-6b09-44a3-9d3f-034c3a87e9cb",
-                                                        "name": "Clara",
-                                                        "lastName": "Gomez",
-                                                        "birthDate": "2000-06-25",
-                                                        "dni": "999888777",
-                                                        "email": "clara@gmail.com"
-                                                    },
-                                                    {
-                                                        "id": "7ae1b662-8f6c-40ad-979e-388ea9b1a1d0",
-                                                        "name": "Javier",
-                                                        "lastName": "Diaz",
-                                                        "birthDate": "1975-09-30",
-                                                        "dni": "111222333",
-                                                        "email": "javier@gmail.com"
-                                                    }
-                                                ],
-                                                "pageable": {
-                                                    "pageNumber": 1,
-                                                    "pageSize": 4,
-                                                    "sort": {
-                                                        "empty": true,
-                                                        "sorted": false,
-                                                        "unsorted": true
-                                                    },
-                                                    "offset": 4,
-                                                    "paged": true,
-                                                    "unpaged": false
-                                                },
-                                                "last": true,
-                                                "totalElements": 8,
-                                                "totalPages": 2,
-                                                "size": 4,
-                                                "number": 1,
-                                                "sort": {
-                                                    "empty": true,
-                                                    "sorted": false,
-                                                    "unsorted": true
-                                                },
-                                                "first": false,
-                                                "numberOfElements": 4,
-                                                "empty": false
-                                            }
-                                            """
-                            )}
-                    )}),
-            @ApiResponse(responseCode = "404",
-                    description = "no patient has been found",
-                    content = @Content),
-    })
-    @GetMapping("/patient")
-    public ResponseEntity<Page<PatientBasicDataDto>> getAll(@PageableDefault(page=0, size=5) Pageable pageable){
-        Page<PatientBasicDataDto> pagedResult = patientService.findAllPatients(pageable);
 
-        if (pagedResult.isEmpty())
-            return ResponseEntity.notFound().build();
-
-        return ResponseEntity.ok(pagedResult);
-    }
 
     @Operation(summary = "Get logged patient")
     @ApiResponses(value = {
