@@ -1,8 +1,10 @@
 package com.salesianos.triana.VaxConnectApi;
 
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
+import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
 import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
+import com.salesianos.triana.VaxConnectApi.user.repo.SanitaryRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,9 +23,11 @@ public class InitData {
     private final PatientRepository patientRepository;
 
     private final PasswordEncoder passwordEncoder;
+    private final SanitaryRepository sanitaryRepository;
 
     @PostConstruct
     public  void initData(){
+
 
 
 
@@ -143,6 +147,19 @@ public class InitData {
         patientRepository.save(patient8);
 
 
+        Sanitary sanitary1 = Sanitary.builder()
+                .dni("00000000")
+                .email("admin@admin.com")
+                .name("Admin")
+                .fotoUrl("https://admin.com/admin.jpg")
+                .birthDate(LocalDate.of(1975, 9, 30))
+                .lastName("Admin")
+                .password(passwordEncoder.encode("adminadmin"))
+                .phoneNumber(1234567890)
+                .roles(EnumSet.of(UserRole.SANITARY))
+                .puesto("Admin")
+                .build();
+        sanitaryRepository.save(sanitary1);
 
     }
 
