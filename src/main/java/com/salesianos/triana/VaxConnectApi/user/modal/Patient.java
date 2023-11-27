@@ -18,7 +18,6 @@ import java.util.*;
 @SuperBuilder
 public class Patient extends User {
 
-
     @ManyToMany
     @JoinTable(name = "tbl_patient_dependients",
             joinColumns = @JoinColumn(name = "responsable_id"),
@@ -27,9 +26,5 @@ public class Patient extends User {
 
     @ManyToMany(mappedBy = "dependients")
     private List<Patient> inChargeOf;
-
-
-
-
 
 }

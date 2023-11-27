@@ -23,7 +23,11 @@ public class JwtProvider {
 
     public static final String TOKEN_TYPE = "JWT";
     public static final String TOKEN_HEADER = "Authorization";
+
     public static final String TOKEN_PREFIX = "Bearer ";
+
+
+
 
     @Value("${jwt.secret}")
     private String jwtSecret;

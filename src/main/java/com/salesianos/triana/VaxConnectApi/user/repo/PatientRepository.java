@@ -1,6 +1,8 @@
 package com.salesianos.triana.VaxConnectApi.user.repo;
 
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
+import com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients;
+import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,8 +23,6 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
     """)
     Optional<List<String>> findAllDependentsUUIDByResponsableEmail(String email);
 
-
-
     Optional<Patient> findFirstByEmail(String email);
 
     @Query("""
@@ -38,21 +38,12 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
                 WHERE p.id = ?1
             """)
     Optional<PatientBasicDataDto> findLoggedPatientById(UUID id);
-
-
-
     @Query("""
-            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto(
-                    p.id,
-                    p.name,
-                    p.lastName,
-                    p.birthDate,
-                    p.dni,
-                    p.email
-                )
-            FROM Patient p
-           """)
-    Page<PatientBasicDataDto> findAllPatients(Pageable pageable);
+        SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients(p.name, p.lastName, p.birthDate) 
+        FROM Patient p 
+        ORDER BY p.birthDate DESC limit 4
+    """)
+    List<GetListYoungestPatients> findYoungPatient();
 
     @Query("""
                 SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto(
@@ -68,4 +59,36 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
                 WHERE p.id = ?1
             """)
     Optional<List<PatientBasicDataDto>> findDependentsByUserId(UUID id);
+
+    @Query("""
+            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto(
+                    p.id,
+                    p.name,
+                    p.lastName,
+                    p.birthDate,
+                    p.dni,
+                    p.email,
+                    p.phoneNumber,
+                    p.fotoUrl
+                )
+            FROM Patient p
+           """)
+    Page<PatientDetailsDto> findAllPatients(Pageable pageable);
+    @Query("""
+                SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto(
+                    p.id,
+                    p.name,
+                    p.lastName,
+                    p.birthDate,
+                    p.dni,
+                    p.email,
+                    p.phoneNumber,
+                    p.fotoUrl
+                )
+                FROM Patient p
+                WHERE p.id = ?1
+            """)
+    Optional<PatientDetailsDto> findByPatientId(UUID id);
+
+
 }
