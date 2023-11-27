@@ -2,6 +2,7 @@ package com.salesianos.triana.VaxConnectApi.user.repo;
 
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients;
+import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -45,19 +46,6 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
     List<GetListYoungestPatients> findYoungPatient();
 
     @Query("""
-            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto(
-                    p.id,
-                    p.name,
-                    p.lastName,
-                    p.birthDate,
-                    p.dni,
-                    p.email
-                )
-            FROM Patient p
-           """)
-    Page<PatientBasicDataDto> findAllPatients(Pageable pageable);
-
-    @Query("""
                 SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto(
                     d.id,
                     d.name,
@@ -71,4 +59,36 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
                 WHERE p.id = ?1
             """)
     Optional<List<PatientBasicDataDto>> findDependentsByUserId(UUID id);
+
+    @Query("""
+            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto(
+                    p.id,
+                    p.name,
+                    p.lastName,
+                    p.birthDate,
+                    p.dni,
+                    p.email,
+                    p.phoneNumber,
+                    p.fotoUrl
+                )
+            FROM Patient p
+           """)
+    Page<PatientDetailsDto> findAllPatients(Pageable pageable);
+    @Query("""
+                SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto(
+                    p.id,
+                    p.name,
+                    p.lastName,
+                    p.birthDate,
+                    p.dni,
+                    p.email,
+                    p.phoneNumber,
+                    p.fotoUrl
+                )
+                FROM Patient p
+                WHERE p.id = ?1
+            """)
+    Optional<PatientDetailsDto> findByPatientId(UUID id);
+
+
 }

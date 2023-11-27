@@ -110,6 +110,10 @@ public class InitData {
                 .build();
         sanitaryRepository.save(sanitary);
 
+
+
+
+
         // Example 4
         Patient patient4 = Patient.builder()
                 .dni("555667788")
@@ -196,6 +200,21 @@ public class InitData {
                 .puesto("Admin")
                 .build();
         sanitaryRepository.save(sanitary1);
+
+        Patient patient9 = Patient.builder()
+                .dni("987654321")
+                .email("maria@gmail.com")
+                .name("Maria")
+                .fotoUrl("https://example.com/maria.jpg")
+                .birthDate(LocalDate.of(1985, 8, 22))
+                .lastName("Rodriguez")
+                .password(passwordEncoder.encode("securepassword"))
+                .phoneNumber(987654321)
+                .roles(EnumSet.of(UserRole.PATIENT))
+                .dependients(List.of(patient3, patient4))
+                .build();
+        patientRepository.save(patient9);
+
     }
 
 }
