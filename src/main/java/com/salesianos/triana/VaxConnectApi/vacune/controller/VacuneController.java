@@ -1,10 +1,10 @@
 package com.salesianos.triana.VaxConnectApi.vacune.controller;
 
+import com.salesianos.triana.VaxConnectApi.vacune.dto.CreateVacuneDto;
 import com.salesianos.triana.VaxConnectApi.vacune.dto.GetAllVaccineDto;
 import com.salesianos.triana.VaxConnectApi.vacune.repo.VacuneRepository;
 import com.salesianos.triana.VaxConnectApi.vacune.service.VacuneService;
 import lombok.AllArgsConstructor;
-import org.apache.tomcat.util.buf.UriUtil;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
@@ -12,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriUtils;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
@@ -43,6 +44,21 @@ public class VacuneController {
                                                                                @PathVariable String name) {
         String fullString = UriUtils.decode(name, "UTF-8");
         fullString = fullString.replace("%20", " ");
-        return vacuneService.findVaccineBySearchParameter(pageable, fullString);
+        return ResponseEntity.ok(vacuneService.findVaccineBySearchParameter(pageable, fullString));
+    }
+
+    @PostMapping("/new")
+    private ResponseEntity<GetAllVaccineDto> createVacune(@RequestBody CreateVacuneDto create) {
+        return vacuneService.createVacune(create);
+    }
+
+    @PutMapping("/edit/{id}")
+    private ResponseEntity<Optional<GetAllVaccineDto>> EditVacune(@PathVariable String id, @RequestBody CreateVacuneDto edit) {
+    return vacuneService.editVacune(UUID.fromString(id), edit);
+    }
+
+    @DeleteMapping("/delete/{id}")
+    private ResponseEntity<GetAllVaccineDto> DeleteVacune(@PathVariable String id) {
+        return vacuneService.deleteVacune(UUID.fromString(id));
     }
 }

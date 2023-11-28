@@ -7,7 +7,6 @@ import lombok.experimental.SuperBuilder;
 @Entity
 @Getter
 @Setter
-@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @SuperBuilder

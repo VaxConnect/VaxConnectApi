@@ -2,6 +2,7 @@ package com.salesianos.triana.VaxConnectApi.user.service;
 
 import com.salesianos.triana.VaxConnectApi.user.dto.CreatePatientDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
+import com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
@@ -61,8 +62,8 @@ public class PatientService {
 
     }
 
-    public Optional<List<String>> findAllDependentsUUIDByResponsableUUID (String email){
-        return patientRepository.findAllDependentsUUIDByResponsableEmail(email);
+    public Optional<List<String>> findAllDependentsEmailByResponsableUUID (String email){
+        return patientRepository.findAllDependentsEmailByResponsableEmail(email);
     }
 
     public boolean hasDependients(UUID uuid){
@@ -73,6 +74,15 @@ public class PatientService {
 
 
     }
+
+    public GETUserProfileDetails getUserProfileDetailsDTO (UUID uuid ){
+
+        Optional<GETUserProfileDetails> patientDTO = patientRepository.getUserProfileDetailsById(uuid);
+
+        return patientDTO.orElse(null);
+
+    }
+
 
    public Optional<Patient>findByEmail(String email){
         return patientRepository.findFirstByEmail(email);

@@ -2,6 +2,7 @@ package com.salesianos.triana.VaxConnectApi.calendarmoment.service;
 
 import com.salesianos.triana.VaxConnectApi.administration.service.AdministrationService;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETNextVaccinesToAdministrateDTO;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETVaccinesNotAdministratedDTO;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.repo.CalendarMomentRepository;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
@@ -34,7 +35,7 @@ public class CalendarMomentService {
         Optional<Patient>patient = patientService.findByEmail(email);
 
         if(!patient.get().getDependients().isEmpty()){
-            Optional<List<String>>listDepEmails = patientService.findAllDependentsUUIDByResponsableUUID(email);
+            Optional<List<String>>listDepEmails = patientService.findAllDependentsEmailByResponsableUUID(email);
             for (String depEmail:listDepEmails.get()) {
                 list.addAll(getNextVaccinesToAdministrateDTOS(depEmail));
             }
@@ -58,6 +59,26 @@ public class CalendarMomentService {
         }else{
             return null;
         }
+
+    }
+
+    //In the method of the top has a function similar with the bottom method, but I want to try both and compare it.
+
+    public List<GETVaccinesNotAdministratedDTO> getAllVaccinesNotImplemented(UUID uuid){
+
+        Optional<Patient> patient = patientService.findById(uuid);
+
+        if(patient.isPresent()){
+            List<GETVaccinesNotAdministratedDTO> list = repository
+                    .getAllGetVaccinesNotAdministratedDTO(
+                            administrationService.getIdOfCalendarMomentNotAdministrated(patient.get().getEmail()
+                            ));
+            return list;
+
+        }else{
+            return null;
+        }
+
 
     }
 
