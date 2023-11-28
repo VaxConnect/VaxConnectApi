@@ -5,6 +5,7 @@ import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
 import com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
+import com.salesianos.triana.VaxConnectApi.user.exception.PatientHasDependentsException;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
 import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
@@ -93,8 +94,9 @@ public class PatientService {
     //Make the edit Patients's password method
 
     public void delete(Patient patient){
-        deleteById(patient.getId());
+        patientRepository.deleteById(patient.getId());
     }
+
 
     public void deleteById(UUID id){
         if (patientRepository.existsById(id))
@@ -131,6 +133,15 @@ public class PatientService {
 
         return patientRepository.save(p);
     }
+
+    public void deleteByPatientId (String id){
+        UUID validId = UUID.fromString(id);
+        if (patientRepository.countDependentsByPatient(validId) == 0)
+            patientRepository.deleteById(validId);
+         else
+            throw new PatientHasDependentsException();
+    }
+
 
 
 }

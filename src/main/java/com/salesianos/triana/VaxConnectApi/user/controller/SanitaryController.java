@@ -26,6 +26,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.CacheRequest;
@@ -265,5 +266,11 @@ public class SanitaryController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(PatientDetailsWithDependentsDto.of(patient));
         //el email debe ser unico crear una excepcion para eso
+    }
+
+    @DeleteMapping("/sanitary/patient/{id}")
+    public ResponseEntity<?> deleteByPatientId(@PathVariable String id){
+        patientService.deleteByPatientId(id);
+        return ResponseEntity.noContent().build();
     }
 }

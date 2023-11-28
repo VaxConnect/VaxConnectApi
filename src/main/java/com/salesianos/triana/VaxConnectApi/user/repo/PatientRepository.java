@@ -107,5 +107,11 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
             """)
     Optional<PatientDetailsDto> findByPatientId(UUID id);
 
+    @Query("""
+            SELECT COUNT(d)
+            FROM Patient p JOIN p.dependients d
+            WHERE p.id = ?1
+            """)
+    int countDependentsByPatient(UUID id);
 
 }
