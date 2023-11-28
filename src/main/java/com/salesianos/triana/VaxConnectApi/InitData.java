@@ -27,8 +27,6 @@ public class InitData {
     @PostConstruct
     public  void initData(){
 
-
-
         Patient patient = Patient.builder()
                 .dni("123456789")
                 .email("manolo@gamil.com")
@@ -46,6 +44,8 @@ public class InitData {
                 .build();
 
         patientRepository.save(patient);
+
+
         Patient patient1 = Patient.builder()
                 .dni("123456789")
                 .email("a@gamil.com")
@@ -110,27 +110,19 @@ public class InitData {
                 .build();
         sanitaryRepository.save(sanitary);
 
-
-
-
-
         // Example 4
         Patient patient4 = Patient.builder()
                 .dni("555667788")
                 .email("juan@gmail.com")
                 .name("Juan")
                 .fotoUrl("https://example.com/juan.jpg")
-                .birthDate(LocalDate.of(2023, 9, 7))
+                .birthDate(LocalDate.of(2023, 8, 10))
                 .lastName("Martinez Rodriguez")
                 .password(passwordEncoder.encode("juanpass"))
                 .phoneNumber("123456789")
                 .roles(EnumSet.of(UserRole.PATIENT))
                 .build();
         patientRepository.save(patient4);
-
-
-
-
 
         // Example 5
         Patient patient5 = Patient.builder()

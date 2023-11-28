@@ -44,7 +44,7 @@ public class VacuneController {
                                                                                @PathVariable String name) {
         String fullString = UriUtils.decode(name, "UTF-8");
         fullString = fullString.replace("%20", " ");
-        return vacuneService.findVaccineBySearchParameter(pageable, fullString);
+        return ResponseEntity.ok(vacuneService.findVaccineBySearchParameter(pageable, fullString));
     }
 
     @PostMapping("/new")
