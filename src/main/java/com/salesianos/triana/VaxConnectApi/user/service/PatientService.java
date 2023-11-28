@@ -112,6 +112,13 @@ public class PatientService {
         p.setPhoneNumber(newPatient.phoneNumber());
         p.setFotoUrl(newPatient.fotoUrl());
 
+        List<Patient> dependents = newPatient.dependents()
+                .stream()
+                .map(id -> patientRepository.getReferenceById(UUID.fromString(id))) // Vlad Mihalcea
+                .toList();
+
+        p.setDependients(dependents);
+
         return patientRepository.save(p);
     }
 

@@ -11,6 +11,8 @@ public record CreatePatientDto(
         String dni,
         String email,
         int phoneNumber,
-        String fotoUrl
+        String fotoUrl,
+        List<String> dependents
 ) {
+
 }

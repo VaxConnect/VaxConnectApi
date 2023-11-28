@@ -212,4 +212,58 @@ public class SanitaryController {
         return ResponseEntity.of(sanitaryService.findDependentsByPatientId(StringToUUID));
     }
 
+    @Operation(summary = "Create new patient with dependents associated")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode ="201",
+                    description = "Patient has been created",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsWithDependentsDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                                {
+                                                    "id": "6ebe29c7-aeb7-44d8-ba6c-23fd68d6666e",
+                                                    "name": "bb",
+                                                    "lastName": "aaa",
+                                                    "birthDate": "2023-09-30",
+                                                    "dni": "asaaaaa",
+                                                    "email": "vvv@gmail.com",
+                                                    "phoneNumber": 332,
+                                                    "fotoUrl": "https://example.com/aa.jpg",
+                                                    "dependents": [
+                                                        {
+                                                            "id": "b70b274d-ad73-41b2-bd8a-c0ba1dd83983",
+                                                            "name": "manolo",
+                                                            "lastName": "manoles",
+                                                            "birthDate": "1990-10-12",
+                                                            "dni": "123456789",
+                                                            "email": "manolo@gamil.com",
+                                                            "phoneNumber": 123456789,
+                                                            "fotoUrl": "foto.url"
+                                                        },
+                                                        {
+                                                            "id": "03fb0513-684e-4711-9906-23fbc4ff341e",
+                                                            "name": "a",
+                                                            "lastName": "manoles",
+                                                            "birthDate": "2004-10-12",
+                                                            "dni": "123456789",
+                                                            "email": "a@gamil.com",
+                                                            "phoneNumber": 123456789,
+                                                            "fotoUrl": "foto.url"
+                                                        }
+                                                    ]
+                                                }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "400",
+                    description = "Cant create the patient",
+                    content = @Content),
+    })
+    @PostMapping("/sanitary/patient")
+    public ResponseEntity<PatientDetailsWithDependentsDto> createPatient(@RequestBody CreatePatientDto newPatient) {
+        Patient patient = patientService.save(newPatient);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(PatientDetailsWithDependentsDto.of(patient));
+        //el email debe ser unico crear una excepcion para eso
+    }
 }
