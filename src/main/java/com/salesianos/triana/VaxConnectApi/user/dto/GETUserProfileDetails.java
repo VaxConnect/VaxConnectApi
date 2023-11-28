@@ -9,7 +9,7 @@ public record GETUserProfileDetails(
 
         LocalDate birthDate,
 
-        String tlfn,
+        int tlfn,
 
         String urlFoto
 

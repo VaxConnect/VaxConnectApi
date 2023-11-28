@@ -1,20 +1,18 @@
-package com.salesianos.triana.VaxConnectApi.Vacune.modal;
+package com.salesianos.triana.VaxConnectApi.vacune.modal;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 @Entity
-@Data
 @Getter
+@Setter
 @Service
 @AllArgsConstructor
 @NoArgsConstructor
@@ -25,8 +23,10 @@ public class Vacune {
     @GenericGenerator(name = "UUID",type = org.hibernate.id.UUIDGenerator.class)
     private UUID id;
 
+    @Column(name = "name")
     private String name;
 
+    @Column(name = "description")
     private String description;
 
 }

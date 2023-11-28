@@ -1,13 +1,15 @@
 package com.salesianos.triana.VaxConnectApi.administration.repo;
 
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETLastVaccinesAdministratedDTO;
+import com.salesianos.triana.VaxConnectApi.administration.dto.GETVaccineAdministratedOnCalendar;
+import com.salesianos.triana.VaxConnectApi.administration.dto.GETVaccineOnCalendarDTO;
+import com.salesianos.triana.VaxConnectApi.administration.dto.GetMomentToImplementVacuneDTO;
 import com.salesianos.triana.VaxConnectApi.administration.model.Administration;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.UUID;
-
 public interface AdministrationRepository extends JpaRepository<Administration, UUID> {
 
     @Query("""
@@ -31,7 +33,21 @@ public interface AdministrationRepository extends JpaRepository<Administration, 
     List<UUID> findIdsOfCalendarsMomentsWhoAreImplementedByPatientEmail(String email);
 
 
-    }
+    @Query("""
+            select new com.salesianos.triana.VaxConnectApi.administration.dto.GETVaccineAdministratedOnCalendar(
+                a.id,
+                v.name,
+                cm.dosisType,
+                cm.age
+            ) from Administration a 
+            left join a.calendarMoment as cm
+            left join cm.vacune as v
+            where a.patientEmail = ?1
+            """)
+    List<GETVaccineAdministratedOnCalendar> findAllVaccinesImplementedByUserEmail(String email);
+
+}
+
 
 
 

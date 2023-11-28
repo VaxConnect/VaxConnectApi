@@ -3,6 +3,7 @@ package com.salesianos.triana.VaxConnectApi.user.service;
 import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
 import com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
+import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
 import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
@@ -60,8 +61,8 @@ public class PatientService {
 
     }
 
-    public Optional<List<String>> findAllDependentsUUIDByResponsableUUID (String email){
-        return patientRepository.findAllDependentsUUIDByResponsableEmail(email);
+    public Optional<List<String>> findAllDependentsEmailByResponsableUUID (String email){
+        return patientRepository.findAllDependentsEmailByResponsableEmail(email);
     }
 
     public boolean hasDependients(UUID uuid){
@@ -81,7 +82,8 @@ public class PatientService {
 
     }
 
-    public Optional<Patient>findByEmail(String email){
+
+   public Optional<Patient>findByEmail(String email){
         return patientRepository.findFirstByEmail(email);
     }
 
@@ -100,12 +102,6 @@ public class PatientService {
 
     public boolean passwordMatch(Patient patient, String clearPassword) {
         return passwordEncoder.matches(clearPassword, patient.getPassword());
-    }
-
-
-
-    public Page<PatientBasicDataDto>findAllPatients(Pageable p){
-        return patientRepository.findAllPatients(p);
     }
 
     public Optional<PatientBasicDataDto>findLoggedById(UUID id){
