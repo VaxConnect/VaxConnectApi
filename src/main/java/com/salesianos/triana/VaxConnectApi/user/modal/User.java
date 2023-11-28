@@ -49,7 +49,7 @@ public abstract class User implements UserDetails {
     protected String lastName;
 
     @Column(name = "phone_number")
-    protected int phoneNumber;
+    protected String phoneNumber;
 
     @DateTimeFormat(pattern = "dd-mm-YYYY")
     @Column(name = "birth_date")

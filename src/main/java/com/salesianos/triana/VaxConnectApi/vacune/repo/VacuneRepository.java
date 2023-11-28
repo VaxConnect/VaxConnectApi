@@ -41,7 +41,7 @@ public interface VacuneRepository extends JpaRepository<Vacune, UUID> {
                 v.description
             )
             FROM Vacune v
-            WHERE v.name LIKE %:name%
+            WHERE v.name ILIKE %:name%
             """)
     Page<GetAllVaccineDto> findVaccineBySearchParameter(Pageable pageable,
                                                         @Param("name") String name);
