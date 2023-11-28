@@ -1,6 +1,5 @@
 package com.salesianos.triana.VaxConnectApi.vacune.service;
 
-import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.vacune.dto.CreateVacuneDto;
 import com.salesianos.triana.VaxConnectApi.vacune.dto.GetAllVaccineDto;
 import com.salesianos.triana.VaxConnectApi.vacune.modal.Vacune;
@@ -11,7 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -50,7 +49,27 @@ public class VacuneService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<GetAllVaccineDto> editVacune(UUID id, CreateVacuneDto edit) {
-        vacuneRepository.findVacuneById(id).map()
+    public ResponseEntity<Optional<GetAllVaccineDto>> editVacune(UUID id, CreateVacuneDto edit) {
+        if(vacuneRepository.existsById(id)) {
+            Optional<Vacune> result = vacuneRepository.findById(id);
+
+            result.get().setName(edit.name());
+            result.get().setDescription(edit.description());
+
+            vacuneRepository.save(result.get());
+
+
+            return ResponseEntity.ok(vacuneRepository.findVacuneById(id));
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+
+    }
+
+    public ResponseEntity<GetAllVaccineDto> deleteVacune(UUID id) {
+        if(vacuneRepository.existsById(id)) {
+            Optional<Vacune> result = vacuneRepository.findById(id);
+            vacuneRepository.deleteById(id);
+        }
     }
 }
