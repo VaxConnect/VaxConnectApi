@@ -43,11 +43,6 @@ public class SanitaryController {
     private final JwtProvider jwtProvider;
 
 
-    @GetMapping("/sanitary/patients/young")
-    public ResponseEntity<List<GetListYoungestPatients>> listYoungestPatients(@AuthenticationPrincipal Sanitary sanitary){
-    List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
-    return ResponseEntity.ok(youngest);
-    }
     @PostMapping("/auth/register/sanitary")
     public ResponseEntity<UserResponse> createSanitary(@RequestBody CreateUserRequest createUserRequest){
         Sanitary sanitary = sanitaryService.createSanitaryWithRole(createUserRequest);
@@ -69,6 +64,11 @@ public class SanitaryController {
                 .body(JwtUserResponse.ofSanitary(sanitary1,token));
     }
 
+    @GetMapping("/sanitary/patients/young")
+    public ResponseEntity<List<GetListYoungestPatients>> listYoungestPatients(@AuthenticationPrincipal Sanitary sanitary){
+        List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
+        return ResponseEntity.ok(youngest);
+    }
 
 
     @Operation(summary = "Get all patients")
@@ -76,27 +76,31 @@ public class SanitaryController {
             @ApiResponse(responseCode ="200",
                     description = "Patients have been found",
                     content = { @Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = PatientBasicDataDto.class)),
+                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
                             examples = {@ExampleObject(
                                     value = """
                                             {
                                                 "content": [
                                                     {
-                                                        "id": "9fd2ebc1-6b09-44a3-9d3f-034c3a87e9cb",
-                                                        "name": "Clara",
-                                                        "lastName": "Gomez",
-                                                        "birthDate": "2000-06-25",
-                                                        "dni": "999888777",
-                                                        "email": "clara@gmail.com"
-                                                    },
-                                                    {
-                                                        "id": "7ae1b662-8f6c-40ad-979e-388ea9b1a1d0",
-                                                        "name": "Javier",
-                                                        "lastName": "Diaz",
-                                                        "birthDate": "1975-09-30",
-                                                        "dni": "111222333",
-                                                        "email": "javier@gmail.com"
-                                                    }
+                                                                 "id": "6d31c447-aab3-4bcb-883c-7ee0ecea9151",
+                                                                 "name": "manolo",
+                                                                 "lastName": "manoles",
+                                                                 "birthDate": "1990-10-12",
+                                                                 "dni": "123456789",
+                                                                 "email": "manolo@gamil.com",
+                                                                 "phoneNumber": 123456789,
+                                                                 "fotoUrl": "foto.url"
+                                                             },
+                                                             {
+                                                                 "id": "66690825-6145-470c-b5a8-18bf386f1ceb",
+                                                                 "name": "a",
+                                                                 "lastName": "manoles",
+                                                                 "birthDate": "2004-10-12",
+                                                                 "dni": "123456789",
+                                                                 "email": "a@gamil.com",
+                                                                 "phoneNumber": 123456789,
+                                                                 "fotoUrl": "foto.url"
+                                                             },
                                                 ],
                                                 "pageable": {
                                                     "pageNumber": 1,
@@ -132,7 +136,7 @@ public class SanitaryController {
                     content = @Content),
     })
     @GetMapping("/sanitary/patient")
-    public ResponseEntity<Page<PatientDetailsDto>> getAllPatients(@PageableDefault(page=0, size=5) Pageable pageable){
+    public ResponseEntity<Page<PatientDetailsDto>> getAllPatients(@PageableDefault(page=0, size=8) Pageable pageable){
         Page<PatientDetailsDto> pagedResult = sanitaryService.findAllPatients(pageable);
 
         if (pagedResult.isEmpty())
@@ -141,15 +145,75 @@ public class SanitaryController {
         return ResponseEntity.ok(pagedResult);
     }
 
+
+    @Operation(summary = "Get patient by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode ="200",
+                    description = "Patient has been found",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                                {
+                                                        "id": "66690825-6145-470c-b5a8-18bf386f1ceb",
+                                                        "name": "a",
+                                                        "lastName": "manoles",
+                                                        "birthDate": "2004-10-12",
+                                                        "dni": "123456789",
+                                                        "email": "a@gamil.com",
+                                                        "phoneNumber": 123456789,
+                                                        "fotoUrl": "foto.url"
+                                                    }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "Patient hasnt been found",
+                    content = @Content)
+    })
     @GetMapping("/sanitary/patient/{id}")
     public ResponseEntity<PatientDetailsDto> findPatientById(@PathVariable String id) {
         UUID StringToUUID = UUID.fromString(id);
         return sanitaryService.findPatientById(StringToUUID);
     }
+
+    @Operation(summary = "Get dependents by patient id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode ="200",
+                    description = "Dependents has been found",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                               {
+                                                             "id": "ca5c4309-ca83-44a8-a377-ecdf92bd4370",
+                                                                 "name": "m",
+                                                                 "lastName": "manoles",
+                                                                 "birthDate": "2011-10-12",
+                                                                 "dni": "123456789",
+                                                                 "email": "m@gamil.com"
+                                                         },
+                                                         {
+                                                             "id": "fd58c6ed-cd01-4811-ba30-9c284bf4dc3b",
+                                                                 "name": "Juan",
+                                                                 "lastName": "Martinez Rodriguez",
+                                                                 "birthDate": "2023-09-07",
+                                                                 "dni": "555667788",
+                                                                 "email": "juan@gmail.com"
+                                                         }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "Dependents dont found",
+                    content = @Content)
+    })
     @GetMapping("/sanitary/patient/dependents/{id}")
     public ResponseEntity <List<PatientBasicDataDto>> findDependentsByPatientId(@PathVariable String id) {
         UUID StringToUUID = UUID.fromString(id);
         return ResponseEntity.of(sanitaryService.findDependentsByPatientId(StringToUUID));
     }
+
+
 
 }
