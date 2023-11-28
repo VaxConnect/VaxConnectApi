@@ -1,5 +1,6 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
+import com.salesianos.triana.VaxConnectApi.user.dto.CreatePatientDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
@@ -99,6 +100,19 @@ public class PatientService {
     }
     public Optional<List<PatientBasicDataDto>>findDependentsByUseId(UUID id){
         return patientRepository.findDependentsByUserId(id);
+    }
+
+    public Patient save(CreatePatientDto newPatient){
+        Patient p = new Patient();
+        p.setName(newPatient.name());
+        p.setLastName(newPatient.lastName());
+        p.setBirthDate(newPatient.birthDate());
+        p.setDni(newPatient.dni());
+        p.setEmail(newPatient.email());
+        p.setPhoneNumber(newPatient.phoneNumber());
+        p.setFotoUrl(newPatient.fotoUrl());
+
+        return patientRepository.save(p);
     }
 
 

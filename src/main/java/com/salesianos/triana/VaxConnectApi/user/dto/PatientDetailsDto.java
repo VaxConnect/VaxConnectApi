@@ -15,4 +15,17 @@ public record PatientDetailsDto(
         int phoneNumber,
         String fotoUrl
 ) {
+    public static PatientDetailsDto of (Patient p)  {
+
+        return new PatientDetailsDto(
+                p.getId(),
+                p.getName(),
+                p.getLastName(),
+                p.getBirthDate(),
+                p.getDni(),
+                p.getEmail(),
+                p.getPhoneNumber(),
+                p.getFotoUrl()
+        );
+    }
 }

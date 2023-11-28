@@ -4,6 +4,7 @@ import com.salesianos.triana.VaxConnectApi.security.jwt.JwtProvider;
 import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
+import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
 import com.salesianos.triana.VaxConnectApi.user.service.SanitaryService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -41,16 +42,15 @@ public class SanitaryController {
     private final SanitaryService sanitaryService;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
-
+    private final PatientService patientService;
 
     @PostMapping("/auth/register/sanitary")
-    public ResponseEntity<UserResponse> createSanitary(@RequestBody CreateUserRequest createUserRequest){
+    public ResponseEntity<UserResponse> createSanitary(@RequestBody CreateUserRequest createUserRequest) {
         Sanitary sanitary = sanitaryService.createSanitaryWithRole(createUserRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.fromSanitary(sanitary));
     }
-
     @PostMapping("/auth/login/sanitary")
-    public ResponseEntity<JwtUserResponse> loginSanitary(@RequestBody LoginRequest loginRequest){
+    public ResponseEntity<JwtUserResponse> loginSanitary(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(
                         loginRequest.mail(),
@@ -61,21 +61,19 @@ public class SanitaryController {
         String token = jwtProvider.generateToken(authentication);
         Sanitary sanitary1 = (Sanitary) authentication.getPrincipal();
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(JwtUserResponse.ofSanitary(sanitary1,token));
+                .body(JwtUserResponse.ofSanitary(sanitary1, token));
     }
-
     @GetMapping("/sanitary/patients/young")
-    public ResponseEntity<List<GetListYoungestPatients>> listYoungestPatients(@AuthenticationPrincipal Sanitary sanitary){
+    public ResponseEntity<List<GetListYoungestPatients>> listYoungestPatients(@AuthenticationPrincipal Sanitary sanitary) {
         List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
         return ResponseEntity.ok(youngest);
     }
 
-
     @Operation(summary = "Get all patients")
     @ApiResponses(value = {
-            @ApiResponse(responseCode ="200",
+            @ApiResponse(responseCode = "200",
                     description = "Patients have been found",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
                             examples = {@ExampleObject(
                                     value = """
@@ -136,7 +134,7 @@ public class SanitaryController {
                     content = @Content),
     })
     @GetMapping("/sanitary/patient")
-    public ResponseEntity<Page<PatientDetailsDto>> getAllPatients(@PageableDefault(page=0, size=8) Pageable pageable){
+    public ResponseEntity<Page<PatientDetailsDto>> getAllPatients(@PageableDefault(page = 0, size = 8) Pageable pageable) {
         Page<PatientDetailsDto> pagedResult = sanitaryService.findAllPatients(pageable);
 
         if (pagedResult.isEmpty())
@@ -148,9 +146,9 @@ public class SanitaryController {
 
     @Operation(summary = "Get patient by id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode ="200",
+            @ApiResponse(responseCode = "200",
                     description = "Patient has been found",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
                             examples = {@ExampleObject(
                                     value = """
@@ -179,9 +177,9 @@ public class SanitaryController {
 
     @Operation(summary = "Get dependents by patient id")
     @ApiResponses(value = {
-            @ApiResponse(responseCode ="200",
+            @ApiResponse(responseCode = "200",
                     description = "Dependents has been found",
-                    content = { @Content(mediaType = "application/json",
+                    content = {@Content(mediaType = "application/json",
                             array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
                             examples = {@ExampleObject(
                                     value = """
@@ -209,11 +207,9 @@ public class SanitaryController {
                     content = @Content)
     })
     @GetMapping("/sanitary/patient/dependents/{id}")
-    public ResponseEntity <List<PatientBasicDataDto>> findDependentsByPatientId(@PathVariable String id) {
+    public ResponseEntity<List<PatientBasicDataDto>> findDependentsByPatientId(@PathVariable String id) {
         UUID StringToUUID = UUID.fromString(id);
         return ResponseEntity.of(sanitaryService.findDependentsByPatientId(StringToUUID));
     }
-
-
 
 }

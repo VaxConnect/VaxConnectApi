@@ -1,9 +1,6 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
-import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
-import com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients;
-import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
-import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
+import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
@@ -68,13 +65,6 @@ public class SanitaryService {
     }
 
 
-
-
-
-
-
-
-
     public Page<PatientDetailsDto> findAllPatients(Pageable p){
         return patientRepository.findAllPatients(p);
     }
@@ -91,4 +81,5 @@ public class SanitaryService {
     public Optional<List<PatientBasicDataDto>>findDependentsByPatientId(UUID id){
         return patientRepository.findDependentsByUserId(id);
     }
+
 }

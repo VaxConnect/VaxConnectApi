@@ -141,4 +141,11 @@ public class PatientController {
     public ResponseEntity<List<PatientBasicDataDto>> findDependentsByUserId(@AuthenticationPrincipal Patient patient) {
         return ResponseEntity.of(patientService.findDependentsByUseId(patient.getId()));
     }
+
+    @PostMapping("/patient")
+    public ResponseEntity<PatientDetailsDto> createPatient(@RequestBody CreatePatientDto newPatient) {
+        Patient patient = patientService.save(newPatient);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(PatientDetailsDto.of(patient));
+    }
 }
