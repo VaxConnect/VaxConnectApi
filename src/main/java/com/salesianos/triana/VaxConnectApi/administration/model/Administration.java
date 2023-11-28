@@ -36,7 +36,7 @@ public class Administration {
     @Column(name = "patient_email")
     private String patientEmail;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "calendar_moment_id", nullable = false)
     private CalendarMoment calendarMoment;
 

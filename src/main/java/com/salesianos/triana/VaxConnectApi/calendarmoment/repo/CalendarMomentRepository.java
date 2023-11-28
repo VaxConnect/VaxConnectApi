@@ -2,6 +2,7 @@ package com.salesianos.triana.VaxConnectApi.calendarmoment.repo;
 
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETLastVaccinesAdministratedDTO;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETNextVaccinesToAdministrateDTO;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETVaccinesNotAdministratedDTO;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.modal.CalendarMoment;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -15,6 +16,17 @@ public interface CalendarMomentRepository extends JpaRepository<CalendarMoment, 
             SELECT a.id FROM CalendarMoment a
             """)
     List<UUID> findAllIdOfCalendarMoments();
+
+    @Query("""
+            SELECT new com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETVaccinesNotAdministratedDTO(
+               cm.id,
+               v.name,
+               cm.age
+            )From CalendarMoment cm 
+            left join cm.vacune as v
+            where cm.id in ?1
+            """)
+    List<GETVaccinesNotAdministratedDTO> getAllGetVaccinesNotAdministratedDTO(List<UUID> listIds);
 
     @Query("""
             select new com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETNextVaccinesToAdministrateDTO(
