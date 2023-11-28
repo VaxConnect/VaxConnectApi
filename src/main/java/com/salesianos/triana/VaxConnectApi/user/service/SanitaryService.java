@@ -63,6 +63,7 @@ public class SanitaryService {
     }
     public List<GetVaccinesMoreAdministrated> VaccinesMoreAdministrated(){
         return sanitaryRepository.getVaccinesMoreAdministrated();
+
     }
 
 

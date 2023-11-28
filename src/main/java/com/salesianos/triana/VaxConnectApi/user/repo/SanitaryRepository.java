@@ -15,18 +15,17 @@ public interface SanitaryRepository extends JpaRepository<Sanitary, UUID> {
     boolean existsByEmailIgnoreCase(String email);
     @Query("""
 SELECT
-  new com.salesianos.triana.VaxConnectApi.user.dto.GetVaccinesMoreAdministrated(
-    v.name,
-    a.date
-    
-  )
-FROM Administration a 
-  left join a.calendarMoment as cm
-            left join cm.vacune as v
-            group by v.name,a.date
-           ORDER BY count(*) desc 
+new com.salesianos.triana.VaxConnectApi.user.dto.GetVaccinesMoreAdministrated(
+count(v.name),
+a.date
+)
+FROM Administration a
+left join a.calendarMoment as cm
+left join cm.vacune as v
+group by v.name,a.date
+
 """)
-     List<GetVaccinesMoreAdministrated> getVaccinesMoreAdministrated();
+    List<GetVaccinesMoreAdministrated> getVaccinesMoreAdministrated();
 
     Optional<Sanitary> findFirstByEmail(String email);
 
