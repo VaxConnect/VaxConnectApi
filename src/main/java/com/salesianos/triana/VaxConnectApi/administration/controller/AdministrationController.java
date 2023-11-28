@@ -1,6 +1,6 @@
 package com.salesianos.triana.VaxConnectApi.administration.controller;
 
-import com.salesianos.triana.VaxConnectApi.administration.dto.GETAllVaccinesImplementedDTO;
+import com.salesianos.triana.VaxConnectApi.administration.dto.GETVaccineAdministratedOnCalendar;
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETLastVaccinesAdministratedDTO;
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETPatientCalendarDTO;
 import com.salesianos.triana.VaxConnectApi.administration.service.AdministrationService;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +28,7 @@ public class AdministrationController {
     }
 
     @GetMapping("/findAllImplementedVaccines/")
-    public ResponseEntity<List<GETAllVaccinesImplementedDTO>> findAllAdministration (@AuthenticationPrincipal Patient patient){
+    public ResponseEntity<List<GETVaccineAdministratedOnCalendar>> findAllAdministration (@AuthenticationPrincipal Patient patient){
         return ResponseEntity.status(200).body(service.getAllVaccinesImplementedDTO(patient.getId()));
     }
 

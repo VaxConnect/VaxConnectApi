@@ -1,6 +1,7 @@
 package com.salesianos.triana.VaxConnectApi.vacune.service;
 
 import com.salesianos.triana.VaxConnectApi.vacune.dto.GetAllVaccineDto;
+import com.salesianos.triana.VaxConnectApi.vacune.modal.Vacune;
 import com.salesianos.triana.VaxConnectApi.vacune.repo.VacuneRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -8,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -18,6 +20,10 @@ public class VacuneService {
 
     public Page<GetAllVaccineDto> findAllVaccine(Pageable pageable) {
         return vacuneRepository.findAllVaccine(pageable);
+    }
+
+    public List<Vacune> countVaccines(){
+        return vacuneRepository.findAll();
     }
 
     public Page<GetAllVaccineDto> findVaccineBySearchParameter(Pageable pageable, String name) {
