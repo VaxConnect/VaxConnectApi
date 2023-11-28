@@ -16,7 +16,7 @@ public record CreateUserRequest(
 
         String dni,
 
-        int tlfn,
+        String phoneNumber,
 
         @JsonFormat(pattern = "dd-MM-yyyy")
         LocalDate birthDate

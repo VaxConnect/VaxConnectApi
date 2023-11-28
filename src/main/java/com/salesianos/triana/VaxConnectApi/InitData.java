@@ -37,7 +37,7 @@ public class InitData {
                 .birthDate(LocalDate.of(1990,10,12))
                 .lastName("manoles")
                 .password(passwordEncoder.encode("12345678"))
-                .phoneNumber(123456789)
+                .phoneNumber("123456789")
                 .accountNonLocked(true)
                 .accountNonExpired(true)
                 .credentialsNonExpired(true)
@@ -54,7 +54,7 @@ public class InitData {
                 .birthDate(LocalDate.of(2004,10,12))
                 .lastName("manoles")
                 .password(passwordEncoder.encode("12345678"))
-                .phoneNumber(123456789)
+                .phoneNumber("123456789")
                 .roles(EnumSet.of(UserRole.PATIENT))
                 .build();
         patientRepository.save(patient1);
@@ -67,7 +67,7 @@ public class InitData {
                 .birthDate(LocalDate.of(2001,10,12))
                 .lastName("manoles")
                 .password(passwordEncoder.encode("12345678"))
-                .phoneNumber(123456789)
+                .phoneNumber("123456789")
                 .accountNonLocked(true)
                 .accountNonExpired(true)
                 .credentialsNonExpired(true)
@@ -84,7 +84,7 @@ public class InitData {
                 .birthDate(LocalDate.of(2011,10,12))
                 .lastName("manoles")
                 .password(passwordEncoder.encode("12345678"))
-                .phoneNumber(123456789)
+                .phoneNumber("123456789")
                 .accountNonLocked(true)
                 .accountNonExpired(true)
                 .credentialsNonExpired(true)
@@ -101,7 +101,7 @@ public class InitData {
                 .birthDate(LocalDate.now())
                 .lastName("perez")
                 .password(passwordEncoder.encode("1234455"))
-                .phoneNumber(7344234)
+                .phoneNumber("123456789")
                 .accountNonLocked(true)
                 .accountNonExpired(true)
                 .credentialsNonExpired(true)
@@ -123,7 +123,7 @@ public class InitData {
                 .birthDate(LocalDate.of(2023, 9, 7))
                 .lastName("Martinez Rodriguez")
                 .password(passwordEncoder.encode("juanpass"))
-                .phoneNumber(987654321)
+                .phoneNumber("123456789")
                 .roles(EnumSet.of(UserRole.PATIENT))
                 .build();
         patientRepository.save(patient4);
@@ -141,7 +141,7 @@ public class InitData {
                 .birthDate(LocalDate.of(2000, 6, 25))
                 .lastName("Gomez")
                 .password(passwordEncoder.encode("clara456"))
-                .phoneNumber(123456789)
+                .phoneNumber("123456789")
                 .roles(EnumSet.of(UserRole.PATIENT))
                 .build();
         patientRepository.save(patient5);
@@ -154,7 +154,7 @@ public class InitData {
                 .birthDate(LocalDate.of(1988, 7, 18))
                 .lastName("Hernandez")
                 .password(passwordEncoder.encode("carlos789"))
-                .phoneNumber(555444333)
+                .phoneNumber("123456789")
                 .roles(EnumSet.of(UserRole.PATIENT))
                 .build();
         patientRepository.save(patient6);
@@ -168,7 +168,7 @@ public class InitData {
                 .birthDate(LocalDate.of(1992, 2, 14))
                 .lastName("Lopez")
                 .password(passwordEncoder.encode("ana567"))
-                .phoneNumber(987654321)
+                .phoneNumber("123456789")
                 .roles(EnumSet.of(UserRole.PATIENT))
                 .build();
         patientRepository.save(patient7);
@@ -182,7 +182,7 @@ public class InitData {
                 .birthDate(LocalDate.of(1975, 9, 30))
                 .lastName("Diaz")
                 .password(passwordEncoder.encode("javier321"))
-                .phoneNumber(123456789)
+                .phoneNumber("123456789")
                 .roles(EnumSet.of(UserRole.PATIENT))
                 .build();
         patientRepository.save(patient8);
@@ -195,7 +195,7 @@ public class InitData {
                 .birthDate(LocalDate.of(1975, 9, 30))
                 .lastName("Admin")
                 .password(passwordEncoder.encode("adminadmin"))
-                .phoneNumber(1234567890)
+                .phoneNumber("123456789")
                 .roles(EnumSet.of(UserRole.SANITARY))
                 .puesto("Admin")
                 .build();
@@ -209,7 +209,7 @@ public class InitData {
                 .birthDate(LocalDate.of(1985, 8, 22))
                 .lastName("Rodriguez")
                 .password(passwordEncoder.encode("securepassword"))
-                .phoneNumber(987654321)
+                .phoneNumber("123456789")
                 .roles(EnumSet.of(UserRole.PATIENT))
                 .dependients(List.of(patient3, patient4))
                 .build();
