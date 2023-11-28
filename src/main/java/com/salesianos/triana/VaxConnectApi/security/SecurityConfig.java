@@ -93,6 +93,7 @@ public class SecurityConfig {
                         antMatcher("/auth/register/sanitary"),//cambiar linea 95
                         antMatcher("/auth/login/sanitary"),
                         antMatcher("/auth/login"),
+                        antMatcher("/sanitary/grafic"),
                         antMatcher("/error")
                 ));
     }

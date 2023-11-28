@@ -17,14 +17,16 @@ public interface SanitaryRepository extends JpaRepository<Sanitary, UUID> {
 SELECT
   new com.salesianos.triana.VaxConnectApi.user.dto.GetVaccinesMoreAdministrated(
     v.name,
-     EXTRACT (YEAR FROM a.date)
+    a.date
+    
   )
-from Administration a 
-            left join a.calendarMoment as cm
+FROM Administration a 
+  left join a.calendarMoment as cm
             left join cm.vacune as v
-   
+            group by v.name,a.date
+           ORDER BY count(*) desc 
 """)
-    public List<GetVaccinesMoreAdministrated> getVaccinesMoreAdministrated();
+     List<GetVaccinesMoreAdministrated> getVaccinesMoreAdministrated();
 
     Optional<Sanitary> findFirstByEmail(String email);
 

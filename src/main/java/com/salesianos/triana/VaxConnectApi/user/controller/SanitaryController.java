@@ -48,7 +48,7 @@ public class SanitaryController {
     List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
     return ResponseEntity.ok(youngest);
     }
-    @GetMapping("/sanitary/vaccines/grafic")
+    @GetMapping("/sanitary/grafic")
     public ResponseEntity<List<GetVaccinesMoreAdministrated>> VaccinesMoreAdministrated(@AuthenticationPrincipal Sanitary sanitary){
         List<GetVaccinesMoreAdministrated> getVaccinesMoreAdministrateds = sanitaryService.VaccinesMoreAdministrated();
         return ResponseEntity.ok(getVaccinesMoreAdministrateds);
