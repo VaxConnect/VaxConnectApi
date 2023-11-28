@@ -70,6 +70,9 @@ public class VacuneService {
         if(vacuneRepository.existsById(id)) {
             Optional<Vacune> result = vacuneRepository.findById(id);
             vacuneRepository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
         }
     }
 }

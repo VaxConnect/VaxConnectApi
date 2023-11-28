@@ -59,6 +59,6 @@ public class VacuneController {
 
     @DeleteMapping("/delete/{id}")
     private ResponseEntity<GetAllVaccineDto> DeleteVacune(@PathVariable String id) {
-
+        return vacuneService.deleteVacune(UUID.fromString(id));
     }
 }
