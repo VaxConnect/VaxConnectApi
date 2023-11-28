@@ -10,7 +10,7 @@ public record CreatePatientDto(
         LocalDate birthDate,
         String dni,
         String email,
-        int phoneNumber,
+        String phoneNumber,
         String fotoUrl,
         List<String> dependents
 ) {

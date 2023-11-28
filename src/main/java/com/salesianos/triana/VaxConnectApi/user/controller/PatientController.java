@@ -141,7 +141,7 @@ public class PatientController {
     public ResponseEntity<List<PatientBasicDataDto>> findDependentsByUserId(@AuthenticationPrincipal Patient patient) {
         return ResponseEntity.of(patientService.findDependentsByUseId(patient.getId()));
     }
-    
+
     @GetMapping("/patient/myprofile/")
     public ResponseEntity<GETUserProfileDetails> viewMyProfile(@AuthenticationPrincipal Patient patient){
         return ResponseEntity.status(200).body(patientService.getUserProfileDetailsDTO(patient.getId()));

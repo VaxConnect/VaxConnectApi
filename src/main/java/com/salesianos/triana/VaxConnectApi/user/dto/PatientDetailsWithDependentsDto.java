@@ -13,7 +13,7 @@ public record PatientDetailsWithDependentsDto(
         LocalDate birthDate,
         String dni,
         String email,
-        int phoneNumber,
+        String phoneNumber,
         String fotoUrl,
         List<PatientDetailsDto> dependents
 ) {

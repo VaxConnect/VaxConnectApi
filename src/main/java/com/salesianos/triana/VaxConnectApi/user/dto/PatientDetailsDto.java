@@ -12,7 +12,7 @@ public record PatientDetailsDto(
         LocalDate birthDate,
         String dni,
         String email,
-        int phoneNumber,
+        String phoneNumber,
         String fotoUrl
 ) {
     public static PatientDetailsDto of (Patient p)  {
