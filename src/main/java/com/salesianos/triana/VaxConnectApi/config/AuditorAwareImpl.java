@@ -19,6 +19,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
                 .map(SecurityContext::getAuthentication)
                 .filter(Authentication::isAuthenticated)
                 .map(Authentication::getPrincipal)
+                .filter(principal -> principal instanceof Patient)
                 .map(Patient.class::cast)
                 .map(Patient::getId)
                 .map(UUID::toString);

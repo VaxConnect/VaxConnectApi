@@ -197,7 +197,7 @@ public class InitData {
                 .dni("987654321")
                 .email("maria@gmail.com")
                 .name("Maria")
-                .fotoUrl("https://example.com/maria.jpg")
+                .fotoUrl("https://static.vecteezy.com/system/resources/thumbnails/001/993/889/small/beautiful-latin-woman-avatar-character-icon-free-vector.jpg")
                 .birthDate(LocalDate.of(1985, 8, 22))
                 .lastName("Rodriguez")
                 .password(passwordEncoder.encode("securepassword"))
