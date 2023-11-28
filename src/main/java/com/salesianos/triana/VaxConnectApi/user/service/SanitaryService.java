@@ -49,6 +49,7 @@ public class SanitaryService {
 
     }
 
+
     public Optional<Sanitary> findByEmail(String email){
         return sanitaryRepository.findFirstByEmail(email);
     }
@@ -57,8 +58,13 @@ public class SanitaryService {
         return patientRepository.findYoungPatient();
 
     }
+
     public List<Sanitary> findAll(){
         return sanitaryRepository.findAll();
+    }
+
+    public List<GetListOfSanitaries> listOfSanitaries (){
+        return sanitaryRepository.getList();
     }
     public Sanitary createSanitaryWithRole(CreateUserRequest createUserRequest){
         return createSanitary(createUserRequest,EnumSet.of(UserRole.SANITARY));
