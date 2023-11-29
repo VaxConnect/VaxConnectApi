@@ -1,10 +1,12 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
+
 import com.salesianos.triana.VaxConnectApi.administration.dto.POSTAdministrationDTO;
 import com.salesianos.triana.VaxConnectApi.administration.service.AdministrationService;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.POSTCalendarMoment;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.modal.CalendarMoment;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.service.CalendarMomentService;
+
 import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
@@ -74,6 +76,10 @@ public class SanitaryService {
     }
     public List<Sanitary> findAll(){
         return sanitaryRepository.findAll();
+    }
+
+    public List<GetListOfSanitaries> listOfSanitaries (){
+        return sanitaryRepository.getList();
     }
     public Sanitary createSanitaryWithRole(CreateUserRequest createUserRequest){
         return createSanitary(createUserRequest,EnumSet.of(UserRole.SANITARY));
