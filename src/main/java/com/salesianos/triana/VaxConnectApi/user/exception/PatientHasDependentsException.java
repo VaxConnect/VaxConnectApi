@@ -11,7 +11,7 @@ import java.time.Instant;
 public class PatientHasDependentsException extends ErrorResponseException /*EntityNotFoundException*/  {
 
     public PatientHasDependentsException() {
-        super(HttpStatus.BAD_REQUEST, of("Cant delete patients with dependents"), null);
+        super(HttpStatus.BAD_REQUEST, of("Cant delete patients with dependents, or those who are in charge of a patient"), null);
     }
 
     public static ProblemDetail of(String message) {

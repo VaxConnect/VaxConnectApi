@@ -179,7 +179,8 @@ public class PatientService {
 
     public void deleteByPatientId (String id){
         UUID validId = UUID.fromString(id);
-        if (patientRepository.countDependentsByPatient(validId) == 0)
+        if (patientRepository.countDependentsByPatient(validId) == 0
+                && patientRepository.countPatientsInChargeOf(validId) == 0)
             patientRepository.deleteById(validId);
          else
             throw new PatientHasDependentsException();

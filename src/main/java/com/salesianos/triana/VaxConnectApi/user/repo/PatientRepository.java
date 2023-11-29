@@ -137,6 +137,13 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
     int countDependentsByPatient(UUID id);
 
     @Query("""
+                SELECT COUNT(ic)
+                    FROM Patient p JOIN p.inChargeOf ic
+                    WHERE p.id = ?1
+            """)
+    int countPatientsInChargeOf(UUID id);
+
+    @Query("""
              SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto(
                     p.id,
                     p.name,
