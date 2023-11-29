@@ -1,19 +1,24 @@
 package com.salesianos.triana.VaxConnectApi.administration.service;
 
 import com.salesianos.triana.VaxConnectApi.administration.dto.*;
+import com.salesianos.triana.VaxConnectApi.administration.model.Administration;
 import com.salesianos.triana.VaxConnectApi.administration.repo.AdministrationRepository;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETVaccinesNotAdministratedDTO;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.error.CalendarMomentNotFoundException;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.modal.CalendarMoment;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.service.CalendarMomentService;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
 import com.salesianos.triana.VaxConnectApi.vacune.modal.Vacune;
 import com.salesianos.triana.VaxConnectApi.vacune.service.VacuneService;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +43,33 @@ public class AdministrationService {
         this.vacuneService = vacuneService;
     }
 
+    public void createAdministration(POSTAdministrationDTO postAdministrationDTO){
+
+        Optional<Patient> patient = patientService.findByEmail(postAdministrationDTO.userEmail());
+        if(patient.isEmpty())
+            throw new EntityNotFoundException();
+
+        Optional<CalendarMoment> calendarMoment = calendarMomentService.findCalendarMomentByVaccineData(postAdministrationDTO.vaccineName(), postAdministrationDTO.typeDosis());
+
+        if(calendarMoment.isEmpty())
+            throw new CalendarMomentNotFoundException(
+                    "Can`t find the calendar moment with the vaccine "
+                            + postAdministrationDTO.vaccineName()+
+                            " and the dosys "
+                            +postAdministrationDTO.typeDosis()
+            );
+
+        Administration administration = Administration.builder()
+                .patientEmail(patient.get().getEmail())
+                .notes(postAdministrationDTO.note())
+                .date(LocalDateTime.now())
+                .calendarMoment(calendarMoment.get())
+                .ageToAdministrate(
+                        ((int) ChronoUnit.MONTHS.between(patient.get().getBirthDate(), LocalDate.now()))
+                )
+                .build();
+        repo.save(administration);
+    }
 
 
     public List<GETLastVaccinesAdministratedDTO> findLastVaccineImplementedByUserId (UUID userID){
