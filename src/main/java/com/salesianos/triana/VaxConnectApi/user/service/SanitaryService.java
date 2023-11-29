@@ -16,10 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -50,8 +47,9 @@ public class SanitaryService {
     }
 
 
-    public Optional<Sanitary> findByEmail(String email){
-        return sanitaryRepository.findFirstByEmail(email);
+    public Optional<Sanitary> findByEmail(String nombre){
+
+        return sanitaryRepository.findFirstByEmail(nombre);
     }
     public List<GetListYoungestPatients> listYoungestPatients(){
 

@@ -38,10 +38,10 @@ public interface SanitaryRepository extends JpaRepository<Sanitary, UUID> {
         s.birthDate
     )
     FROM Sanitary s
-     WHERE s.email = ?1
+      WHERE LOWER(s.name) = LOWER(?1)
             """)
 
-    Optional<GetSanitaryByEmail> getsanitaryByName(String email);
+    Optional<GetSanitaryByEmail> getsanitaryByName(String name);
 
 
 
