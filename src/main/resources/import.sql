@@ -113,3 +113,6 @@ INSERT INTO administration (id, date, age_to_administrate, notes, patient_email,
 INSERT INTO administration (id, date, age_to_administrate, notes, patient_email, calendar_moment_id) VALUES (UUID(), '2023-02-15 14:15:00', 2, 'Administered Hepatitis B Vaccine to a 2-month-old', 'juan@gmail.com', (SELECT id FROM calendar_moment WHERE age = 2 AND vacune_id =  (SELECT id FROM vacune WHERE name = 'Hepatitis B Vaccine')));
 INSERT INTO administration (id, date, age_to_administrate, notes, patient_email, calendar_moment_id) VALUES (UUID(), '2023-02-28 10:30:00', 2, 'Administered Enfermedad Meningocócica Vaccine to a 2-month-old', 'juan@gmail.com', (SELECT id FROM calendar_moment WHERE age = 2 AND vacune_id = (SELECT id FROM vacune WHERE name = 'Enfermedad Meningocócica Vaccine')));
 INSERT INTO administration (id, date, age_to_administrate, notes, patient_email, calendar_moment_id) VALUES (UUID(), '2023-02-28 10:30:00', 2, 'Administered Enfermedad Neumocócica Vaccine to a 2-month-old', 'juan@gmail.com', (SELECT id FROM calendar_moment WHERE age = 2 AND vacune_id = (SELECT id FROM vacune WHERE name = 'Enfermedad Neumocócica Vaccine')));
+
+
+
