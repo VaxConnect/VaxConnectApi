@@ -23,10 +23,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -61,19 +58,23 @@ public class SanitaryService {
         administrationService.createAdministration(postAdministrationDTO);
     }
 
-    public Optional<Sanitary> findByEmail(String email){
-        return sanitaryRepository.findFirstByEmail(email);
+
+    public Optional<Sanitary> findByEmail(String nombre){
+
+        return sanitaryRepository.findFirstByEmail(nombre);
     }
     public List<GetListYoungestPatients> listYoungestPatients(){
 
         return patientRepository.findYoungPatient();
 
     }
+
     public List<GetListYoungestPatients> findLastAddedPatient(){
 
         return patientRepository.findLastPatientAded();
 
     }
+
     public List<Sanitary> findAll(){
         return sanitaryRepository.findAll();
     }
@@ -84,7 +85,9 @@ public class SanitaryService {
     public Sanitary createSanitaryWithRole(CreateUserRequest createUserRequest){
         return createSanitary(createUserRequest,EnumSet.of(UserRole.SANITARY));
     }
-
+    public Optional<GetSanitaryByEmail> findByEmailDto (String email){
+        return sanitaryRepository.getsanitaryByName(email);
+    }
 
     public Page<PatientDetailsDto> findAllPatients(Pageable p){
         return patientRepository.findAllPatients(p);

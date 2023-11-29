@@ -50,6 +50,16 @@ public class SanitaryController {
     private final PatientService patientService;
 
 
+
+
+    @GetMapping("/sanitary/patients/young")
+    public ResponseEntity<List<GetListYoungestPatients>> listYoungestPatients(@AuthenticationPrincipal Sanitary sanitary){
+    List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
+    return ResponseEntity.ok(youngest);
+    }
+
+
+
     @PostMapping("/sanitary/calendarMoment/create/")
     public ResponseEntity<?> createCalendarMoment(@Valid @RequestBody POSTCalendarMoment postCalendarMoment){
         sanitaryService.createCalendarMoment(postCalendarMoment);
@@ -61,11 +71,13 @@ public class SanitaryController {
         sanitaryService.createAdministration(postAdministrationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+
     @GetMapping("/sanitary/list")
     public ResponseEntity<List<GetListOfSanitaries>> getList(@AuthenticationPrincipal Sanitary sanitary){
         List<GetListOfSanitaries> getListOfSanitaries = sanitaryService.listOfSanitaries();
         return ResponseEntity.ok(getListOfSanitaries);
     }
+
     @PostMapping("/auth/register/sanitary")
     public ResponseEntity<UserResponse> createSanitary(@RequestBody CreateUserRequest createUserRequest) {
         Sanitary sanitary = sanitaryService.createSanitaryWithRole(createUserRequest);
@@ -85,17 +97,22 @@ public class SanitaryController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(JwtUserResponse.ofSanitary(sanitary1, token));
     }
-    @GetMapping("/sanitary/patients/young/")
-    public ResponseEntity<List<GetListYoungestPatients>> listYoungestPatients(@AuthenticationPrincipal Sanitary sanitary) {
-        List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
-        return ResponseEntity.ok(youngest);
+
+    @GetMapping("/sanitary/{email}")
+    public ResponseEntity<Optional<GetSanitaryByEmail>> findByEmail(@PathVariable String email){
+        Optional<GetSanitaryByEmail> getListOfSanitaries = sanitaryService.findByEmailDto(email);
+        return ResponseEntity.ok(getListOfSanitaries);
     }
+
+
+
 
     @GetMapping("/sanitary/patients/last/")
     public ResponseEntity<List<GetListYoungestPatients>> listLastPatients(@AuthenticationPrincipal Sanitary sanitary) {
         List<GetListYoungestPatients> youngest = sanitaryService.findLastAddedPatient();
         return ResponseEntity.ok(youngest);
     }
+
 
 
     @Operation(summary = "Get all patients")
