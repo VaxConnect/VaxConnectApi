@@ -147,4 +147,9 @@ public class PatientController {
         return ResponseEntity.status(200).body(patientService.getUserProfileDetailsDTO(patient.getId()));
     }
 
+    @GetMapping("/patient/myFamilyProfile/")
+    public ResponseEntity<List<GETUserProfileDetails>> viewMyFamilyProfile(@AuthenticationPrincipal Patient patient){
+        return ResponseEntity.ok(patientService.getFamilyOfUserDetails(patient.getId()));
+    }
+
 }

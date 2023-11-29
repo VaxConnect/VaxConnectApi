@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -83,6 +84,13 @@ public class PatientService {
         return patientDTO.orElse(null);
 
     }
+    public List<GETUserProfileDetails> getFamilyOfUserDetails(UUID id){
+        Optional<List<GETUserProfileDetails>> list = patientRepository.getFamilyDetails(id);
+
+        return list.orElse(null);
+
+    }
+
 
 
    public Optional<Patient>findByEmail(String email){
