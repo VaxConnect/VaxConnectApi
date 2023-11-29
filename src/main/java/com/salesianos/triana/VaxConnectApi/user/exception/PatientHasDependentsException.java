@@ -1,5 +1,6 @@
 package com.salesianos.triana.VaxConnectApi.user.exception;
 
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.ErrorResponseException;
@@ -7,7 +8,7 @@ import org.springframework.web.ErrorResponseException;
 import java.net.URI;
 import java.time.Instant;
 
-public class PatientHasDependentsException extends ErrorResponseException {
+public class PatientHasDependentsException extends ErrorResponseException /*EntityNotFoundException*/  {
 
     public PatientHasDependentsException() {
         super(HttpStatus.BAD_REQUEST, of("Cant delete patients with dependents"), null);
@@ -21,4 +22,9 @@ public class PatientHasDependentsException extends ErrorResponseException {
         problemDetail.setProperty("timestamp", Instant.now());
         return problemDetail;
     }
+
+    /*
+    public PatientHasDependentsException(){
+        super("Cant delete patients with dependents");
+    }*/
 }
