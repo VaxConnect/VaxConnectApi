@@ -20,11 +20,12 @@ public interface SanitaryRepository extends JpaRepository<Sanitary, UUID> {
 
     @Query("""
     SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListOfSanitaries(
-
+        s.id,
         s.fotoUrl,
 
         s.name || ' ' || s.lastName,
         s.email,
+       
         s.birthDate
     )
     FROM Sanitary s
