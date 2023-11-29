@@ -1,0 +1,1023 @@
+{
+	"info": {
+		"_postman_id": "823d61cc-3fe0-4b79-9d38-96ea39522b40",
+		"name": "VaxConnect",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "30052610"
+	},
+	"item": [
+		{
+			"name": "LogIn",
+			"item": [
+				{
+					"name": "Patient Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();\r",
+									"pm.collectionVariables.set(\"access_token\", json.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mail\": \"maria@gmail.com\",\r\n    \"password\": \"securepassword\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Sanitary Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"var json = pm.response.json();\r",
+									"pm.collectionVariables.set(\"access_token\", json.token);"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"mail\": \"admin@admin.com\",\r\n    \"password\": \"adminadmin\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login/sanitary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login",
+								"sanitary"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Patient Register",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"yo@yo.com\",\r\n    \"name\": \"manola\",\r\n    \"lastName\": \"Rocio\",\r\n    \"password\": \"password\",\r\n    \"verifyPassword\": \"password\",\r\n    \"dni\": \"83984993N\",\r\n    \"tlfn\": 9384029,\r\n    \"birthDate\": \"23-03-2001\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\":\"perez@gmail.cm\",\r\n    \"password\":\"1234\",\r\n    \"name\":\"aa\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register/sanitary",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register",
+								"sanitary"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Vacune",
+			"item": [
+				{
+					"name": "Search Vacuna",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "text"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/vacune/search/vacuna",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vacune",
+								"search",
+								"vacuna"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Vacune By Id",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vacune/{id}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vacune",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "allVaccine",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vacune/all?page=1",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vacune",
+								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "NewVacune",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"vacuna de la polio\",\r\n    \"description\": \"muy buena description\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/vacune/new",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vacune",
+								"new"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editVacune",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"te he cambiado\",\r\n    \"description\": \"buajajaja\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/vacune/edit/{id}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vacune",
+								"edit",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteVacune",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/vacune/delete/{id}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"vacune",
+								"delete",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "MoreAppliedVaccines",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/sanitary/vaccines/grafic",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sanitary",
+								"vaccines",
+								"grafic"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Administration",
+			"item": [
+				{
+					"name": "get calendar",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiM2YyZmU4Ny05ODI0LTRlZTktOTMxNC1hMzg3NWUwN2IzOTQiLCJpYXQiOjE3MDA4MjUwNTl9.6URg6j6T4Qmj_8CqL1obilRe2pE5n1wlN_DJxIJ_ZW4iN6RvosqLNS_-t7ix9cwfvgPQbk1Bc4vLA-rkztdjtw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/patient/administration/getCalendar/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"administration",
+								"getCalendar",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find last vaccines",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiM2YyZmU4Ny05ODI0LTRlZTktOTMxNC1hMzg3NWUwN2IzOTQiLCJpYXQiOjE3MDA4MjUwNTl9.6URg6j6T4Qmj_8CqL1obilRe2pE5n1wlN_DJxIJ_ZW4iN6RvosqLNS_-t7ix9cwfvgPQbk1Bc4vLA-rkztdjtw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/patient/administration/findLastVaccineImplementedByUserId/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"administration",
+								"findLastVaccineImplementedByUserId",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Find All Implemente Vaccines(sanitary)",
+					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "{{access_token}}",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/patient/administration/findAllImplementedVaccines/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"administration",
+								"findAllImplementedVaccines",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Administration",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiM2YyZmU4Ny05ODI0LTRlZTktOTMxNC1hMzg3NWUwN2IzOTQiLCJpYXQiOjE3MDA4MjUwNTl9.6URg6j6T4Qmj_8CqL1obilRe2pE5n1wlN_DJxIJ_ZW4iN6RvosqLNS_-t7ix9cwfvgPQbk1Bc4vLA-rkztdjtw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"userEmail\": \"maria@gmail.com\",\r\n    \"vaccineName\": \"Difteria, Tétanos, Tosferina (DTP) Vaccine\",\r\n    \"typeDosis\":\"DTPA7\",\r\n    \"note\":\"puesta\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sanitary/administration/create/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"administration",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "CalendarMoment",
+			"item": [
+				{
+					"name": "find next vaccines",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiM2YyZmU4Ny05ODI0LTRlZTktOTMxNC1hMzg3NWUwN2IzOTQiLCJpYXQiOjE3MDA4MjUwNTl9.6URg6j6T4Qmj_8CqL1obilRe2pE5n1wlN_DJxIJ_ZW4iN6RvosqLNS_-t7ix9cwfvgPQbk1Bc4vLA-rkztdjtw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/patient/calendarmoment/findNextVaccines/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"calendarmoment",
+								"findNextVaccines",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "find vaccines not implemented",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiM2YyZmU4Ny05ODI0LTRlZTktOTMxNC1hMzg3NWUwN2IzOTQiLCJpYXQiOjE3MDA4MjUwNTl9.6URg6j6T4Qmj_8CqL1obilRe2pE5n1wlN_DJxIJ_ZW4iN6RvosqLNS_-t7ix9cwfvgPQbk1Bc4vLA-rkztdjtw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{base_url}}/patient/calendarmoment/findVaccinesNotAdministrated/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"calendarmoment",
+								"findVaccinesNotAdministrated",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add Calendar Moment",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiM2YyZmU4Ny05ODI0LTRlZTktOTMxNC1hMzg3NWUwN2IzOTQiLCJpYXQiOjE3MDA4MjUwNTl9.6URg6j6T4Qmj_8CqL1obilRe2pE5n1wlN_DJxIJ_ZW4iN6RvosqLNS_-t7ix9cwfvgPQbk1Bc4vLA-rkztdjtw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dosysType\": \"La de los 500\",\r\n    \"age\": \"500\",\r\n    \"recomendation\":\"strong health\",\r\n    \"discriminats\":\"from real betis\",\r\n    \"vacuneName\": \"Difteria, Tétanos, Tosferina (DTP) Vaccine\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sanitary/calendarMoment/create/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"calendarMoment",
+								"create",
+								""
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Sanitary",
+			"item": [
+				{
+					"name": "FindSanitaryByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/sanitary/admi",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sanitary",
+								"admi"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get young patients",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiM2YyZmU4Ny05ODI0LTRlZTktOTMxNC1hMzg3NWUwN2IzOTQiLCJpYXQiOjE3MDA4MjUwNTl9.6URg6j6T4Qmj_8CqL1obilRe2pE5n1wlN_DJxIJ_ZW4iN6RvosqLNS_-t7ix9cwfvgPQbk1Bc4vLA-rkztdjtw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/sanitary/patients/young/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"patients",
+								"young",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetAllPatients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sanitary/patient?page=0&size=10",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"patient"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "listOfSanitary",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/sanitary/list",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"sanitary",
+								"list"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteSanitary",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sanitary/{id}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Patient",
+			"item": [
+				{
+					"name": "GetDependentsByPatientId",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sanitary/patient/dependents/{id}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"patient",
+								"dependents",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetpacientById",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sanitary/patient/{id}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"patient",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Last Added Patients",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiM2YyZmU4Ny05ODI0LTRlZTktOTMxNC1hMzg3NWUwN2IzOTQiLCJpYXQiOjE3MDA4MjUwNTl9.6URg6j6T4Qmj_8CqL1obilRe2pE5n1wlN_DJxIJ_ZW4iN6RvosqLNS_-t7ix9cwfvgPQbk1Bc4vLA-rkztdjtw",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/sanitary/patients/last/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"patients",
+								"last",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "My Profile as Patient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/patient/myprofile/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"myprofile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get My Family Data",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/patient/myFamilyProfile/",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"myFamilyProfile",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetLoggedPatient",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/patient/logged",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"logged"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetPatientRelatives",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/patient/dependents",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"patient",
+								"dependents"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "ListYoungestPacients",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sanitary/patients/young",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"patients",
+								"young"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "findPatientByName",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sanitary/search/{name}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"search",
+								"{name}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "deleteByPatientId",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/sanitary/patient/{id}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"patient",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CreatePatient",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"bb\",\r\n    \"lastName\": \"aaa\",\r\n    \"birthDate\": \"09-11-2023\",\r\n    \"dni\": \"asaaaaa\",\r\n    \"email\": \"emailunicoo@gmail.com\",\r\n    \"phoneNumber\": \"332\",\r\n    \"fotoUrl\": \"https://example.com/aa.jpg\",\r\n    \"password\": \"1\",\r\n    \"dependents\": [\r\n        \"UUID id existente 1\",\r\n        \"UUID id existente 2\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sanitary/patient",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"patient"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "editPatient",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"zzzzz\",\r\n    \"lastName\": \"aaaaaaaaaa\",\r\n    \"phoneNumber\": \"211111111\",\r\n    \"fotoUrl\": \"https://example.com/zzzzzz.jpg\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/sanitary/patient/{id}",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"sanitary",
+								"patient",
+								"{id}"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{access_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "access_token",
+			"value": "",
+			"type": "string"
+		},
+		{
+			"key": "base_url",
+			"value": "http://localhost:8080",
+			"type": "string"
+		}
+	]
+}
