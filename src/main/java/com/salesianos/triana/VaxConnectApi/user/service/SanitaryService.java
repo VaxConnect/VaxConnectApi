@@ -8,6 +8,7 @@ import com.salesianos.triana.VaxConnectApi.calendarmoment.modal.CalendarMoment;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.service.CalendarMomentService;
 
 import com.salesianos.triana.VaxConnectApi.user.dto.*;
+import com.salesianos.triana.VaxConnectApi.user.exception.SanitaryNotFoundException;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
@@ -59,9 +60,14 @@ public class SanitaryService {
     }
 
 
-    public Optional<Sanitary> findByEmail(String nombre){
-
-        return sanitaryRepository.findFirstByEmail(nombre);
+ public Optional<Sanitary> findByEmail(String nombre){
+        Optional<Sanitary> sanitary;
+        sanitary=sanitaryRepository.findFirstByEmail(nombre);
+        if (sanitary.isPresent()){
+            return sanitaryRepository.findFirstByEmail(nombre);
+        }else {
+            throw new SanitaryNotFoundException();
+        }
     }
     public List<GetListYoungestPatients> listYoungestPatients(){
 
@@ -86,7 +92,12 @@ public class SanitaryService {
         return createSanitary(createUserRequest,EnumSet.of(UserRole.SANITARY));
     }
     public Optional<GetSanitaryByEmail> findByEmailDto (String email){
-        return sanitaryRepository.getsanitaryByName(email);
+        Optional<GetSanitaryByEmail> getSanitaryByEmail =sanitaryRepository.getsanitaryByName(email);
+        if (getSanitaryByEmail.isPresent()){
+            return sanitaryRepository.getsanitaryByName(email);
+        }else {
+            throw new SanitaryNotFoundException();
+        }
     }
 
     public Page<PatientDetailsDto> findAllPatients(Pageable p){
