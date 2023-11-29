@@ -52,7 +52,7 @@ public class SanitaryController {
 
 
 
-    @GetMapping("/sanitary/patients/young")
+    @GetMapping("/sanitary/patients/young/")
     public ResponseEntity<List<GetListYoungestPatients>> listYoungestPatients(@AuthenticationPrincipal Sanitary sanitary){
     List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
     return ResponseEntity.ok(youngest);
@@ -71,7 +71,28 @@ public class SanitaryController {
         sanitaryService.createAdministration(postAdministrationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
-
+    @Operation(summary = "Get lits of Sanitary")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "List of Sanitary",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                                {
+                                                        "uuid": "9fe8abad-c195-440e-8e71-0b55e35cd7fc",
+                                                        "img": "urldeimg",
+                                                        "fullname": "Angel perez",
+                                                        "email": "angel@gmail.com",
+                                                        "birthDate": "2023-11-29"
+                                                    },
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "Not found",
+                    content = @Content)
+    })
     @GetMapping("/sanitary/list")
     public ResponseEntity<List<GetListOfSanitaries>> getList(@AuthenticationPrincipal Sanitary sanitary){
         List<GetListOfSanitaries> getListOfSanitaries = sanitaryService.listOfSanitaries();
@@ -83,6 +104,29 @@ public class SanitaryController {
         Sanitary sanitary = sanitaryService.createSanitaryWithRole(createUserRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.fromSanitary(sanitary));
     }
+    @Operation(summary = "Post Sanitary")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "201",
+                    description = "Sanitary logued",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                                {
+                                                          "id": "9fe8abad-c195-440e-8e71-0b55e35cd7fc",
+                                                          "mail": "angel@gmail.com",
+                                                          "avatar": "urldeimg",
+                                                          "fullName": "Angel perez",
+                                                          "createdAt": "29/11/2023 22:50:05",
+                                                          "token": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI5ZmU4YWJhZC1jMTk1LTQ0MGUtOGU3MS0wYjU1ZTM1Y2Q3ZmMiLCJpYXQiOjE3MDEzODEwMTF9.4TpqofvGJGfE0mAoS_NG88fVp0sOUJndflU9JafAxxio2RYO4v0D1TnlLXLZU6LAdU2wuCH1Q0JMXDlPnrOWcA"
+                                                      }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "401",
+                    description = "No user with email:",
+                    content = @Content)
+    })
     @PostMapping("/auth/login/sanitary")
     public ResponseEntity<JwtUserResponse> loginSanitary(@RequestBody LoginRequest loginRequest) {
         Authentication authentication = authenticationManager.authenticate(
@@ -97,10 +141,33 @@ public class SanitaryController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(JwtUserResponse.ofSanitary(sanitary1, token));
     }
+    @Operation(summary = "Get Sanitary by nombre")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Sanitary has been found",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                                {
+                                                         "img": "https://admin.com/admin.jpg",
+                                                         "fullname": "Admin Admin",
+                                                         "email": "admin@admin.com",
+                                                         "phoneNumber": "123456789",
+                                                         "dni": "00000000",
+                                                         "birthDate": "1975-09-30"
+                                                     }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "Sanitary hasn't been found",
+                    content = @Content)
+    })
 
-    @GetMapping("/sanitary/{email}")
-    public ResponseEntity<Optional<GetSanitaryByEmail>> findByEmail(@PathVariable String email){
-        Optional<GetSanitaryByEmail> getListOfSanitaries = sanitaryService.findByEmailDto(email);
+    @GetMapping("/sanitary/{nombre}")
+    public ResponseEntity<Optional<GetSanitaryByEmail>> findByEmail(@PathVariable String nombre){
+        Optional<GetSanitaryByEmail> getListOfSanitaries = sanitaryService.findByEmailDto(nombre);
         return ResponseEntity.ok(getListOfSanitaries);
     }
 
@@ -407,7 +474,18 @@ public class SanitaryController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(patient);
     }
-
+    @Operation(summary = "Delete sanitary by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Sanitary delete successfully",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Cant delete sanitary ",
+                    content = @Content
+            )
+    })
     @DeleteMapping("/sanitary/{uuid}")
     public ResponseEntity<?> delete(@PathVariable String uuid){
         sanitaryService.deleteByIdSanitary(uuid);

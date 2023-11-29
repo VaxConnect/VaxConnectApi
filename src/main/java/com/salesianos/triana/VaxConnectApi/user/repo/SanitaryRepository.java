@@ -25,6 +25,7 @@ public interface SanitaryRepository extends JpaRepository<Sanitary, UUID> {
 
         s.name || ' ' || s.lastName,
         s.email,
+       
         s.birthDate
     )
     FROM Sanitary s
