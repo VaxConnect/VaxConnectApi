@@ -72,11 +72,18 @@ public class SanitaryController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(JwtUserResponse.ofSanitary(sanitary1, token));
     }
-    @GetMapping("/sanitary/patients/young")
+    @GetMapping("/sanitary/patients/young/")
     public ResponseEntity<List<GetListYoungestPatients>> listYoungestPatients(@AuthenticationPrincipal Sanitary sanitary) {
         List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
         return ResponseEntity.ok(youngest);
     }
+
+    @GetMapping("/sanitary/patients/last/")
+    public ResponseEntity<List<GetListYoungestPatients>> listLastPatients(@AuthenticationPrincipal Sanitary sanitary) {
+        List<GetListYoungestPatients> youngest = sanitaryService.findLastAddedPatient();
+        return ResponseEntity.ok(youngest);
+    }
+
 
     @Operation(summary = "Get all patients")
     @ApiResponses(value = {
