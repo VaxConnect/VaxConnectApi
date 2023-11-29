@@ -13,6 +13,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface VacuneRepository extends JpaRepository<Vacune, UUID> {
+
+    Optional<Vacune> findByName(String name);
+
     @Query("""
             SELECT new com.salesianos.triana.VaxConnectApi.vacune.dto.GetAllVaccineDto(
                 v.id,

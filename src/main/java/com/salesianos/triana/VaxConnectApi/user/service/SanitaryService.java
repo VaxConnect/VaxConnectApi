@@ -1,5 +1,12 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
+
+import com.salesianos.triana.VaxConnectApi.administration.dto.POSTAdministrationDTO;
+import com.salesianos.triana.VaxConnectApi.administration.service.AdministrationService;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.POSTCalendarMoment;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.modal.CalendarMoment;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.service.CalendarMomentService;
+
 import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
@@ -28,8 +35,8 @@ public class SanitaryService {
     private final PasswordEncoder passwordEncoder;
     private final SanitaryRepository sanitaryRepository;
     private final PatientRepository patientRepository;
-
-
+    private final AdministrationService administrationService;
+    private final CalendarMomentService calendarMomentService;
 
     public Sanitary createSanitary (CreateUserRequest createUserRequest, EnumSet<UserRole>roles){
         if (sanitaryRepository.existsByEmailIgnoreCase(createUserRequest.email())){
@@ -45,8 +52,13 @@ public class SanitaryService {
                 .roles(roles)
                 .build();
         return sanitaryRepository.save(sanitary);
+    }
 
-
+    public void createCalendarMoment(POSTCalendarMoment postCalendarMoment){
+        calendarMomentService.createCalendarMoment(postCalendarMoment);
+    }
+    public void createAdministration(POSTAdministrationDTO postAdministrationDTO){
+        administrationService.createAdministration(postAdministrationDTO);
     }
 
     public Optional<Sanitary> findByEmail(String email){
@@ -55,6 +67,11 @@ public class SanitaryService {
     public List<GetListYoungestPatients> listYoungestPatients(){
 
         return patientRepository.findYoungPatient();
+
+    }
+    public List<GetListYoungestPatients> findLastAddedPatient(){
+
+        return patientRepository.findLastPatientAded();
 
     }
     public List<Sanitary> findAll(){
@@ -67,13 +84,6 @@ public class SanitaryService {
     public Sanitary createSanitaryWithRole(CreateUserRequest createUserRequest){
         return createSanitary(createUserRequest,EnumSet.of(UserRole.SANITARY));
     }
-
-
-
-
-
-
-
 
 
     public Page<PatientDetailsDto> findAllPatients(Pageable p){
@@ -92,4 +102,5 @@ public class SanitaryService {
     public Optional<List<PatientBasicDataDto>>findDependentsByPatientId(UUID id){
         return patientRepository.findDependentsByUserId(id);
     }
+
 }

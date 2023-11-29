@@ -1,27 +1,25 @@
 package com.salesianos.triana.VaxConnectApi.user.dto;
 
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.UUID;
 
-public record PatientDetailsDto(
+public record PatientDetailsWithDependentsDto(
         UUID id,
-        @NotBlank(message = "Name is necessary")
         String name,
-        @NotEmpty(message = "Last name cant be empty")
         String lastName,
         LocalDate birthDate,
         String dni,
         String email,
         String phoneNumber,
-        String fotoUrl
+        String fotoUrl,
+        List<PatientDetailsDto> dependents
 ) {
-    public static PatientDetailsDto of (Patient p)  {
+    public static PatientDetailsWithDependentsDto of (Patient p)  {
 
-        return new PatientDetailsDto(
+        return new PatientDetailsWithDependentsDto(
                 p.getId(),
                 p.getName(),
                 p.getLastName(),
@@ -29,7 +27,11 @@ public record PatientDetailsDto(
                 p.getDni(),
                 p.getEmail(),
                 p.getPhoneNumber(),
-                p.getFotoUrl()
+                p.getFotoUrl(),
+                p.getDependients()
+                        .stream()
+                        .map(PatientDetailsDto::of)
+                        .toList()
         );
     }
 }
