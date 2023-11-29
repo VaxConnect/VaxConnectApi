@@ -5,6 +5,8 @@ import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
 import com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
+import com.salesianos.triana.VaxConnectApi.user.exception.PatientHasDependentsException;
+import com.salesianos.triana.VaxConnectApi.user.exception.PatientNotFoundException;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
 import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
@@ -28,7 +30,7 @@ public class PatientService {
 
     public Patient createPatient(CreateUserRequest createUserRequest, EnumSet<UserRole>roles){
         if (patientRepository.existsByEmailIgnoreCase(createUserRequest.email()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Elemail del usuario ya ha sido registrado");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El email del usuario ya ha sido registrado");
 
         Patient patient = Patient.builder()
                 .email(createUserRequest.email())
@@ -82,6 +84,13 @@ public class PatientService {
         return patientDTO.orElse(null);
 
     }
+    public List<GETUserProfileDetails> getFamilyOfUserDetails(UUID id){
+        Optional<List<GETUserProfileDetails>> list = patientRepository.getFamilyDetails(id);
+
+        return list.orElse(null);
+
+    }
+
 
 
    public Optional<Patient>findByEmail(String email){
@@ -93,8 +102,9 @@ public class PatientService {
     //Make the edit Patients's password method
 
     public void delete(Patient patient){
-        deleteById(patient.getId());
+        patientRepository.deleteById(patient.getId());
     }
+
 
     public void deleteById(UUID id){
         if (patientRepository.existsById(id))
@@ -112,15 +122,50 @@ public class PatientService {
         return patientRepository.findDependentsByUserId(id);
     }
 
-    public Patient save(CreatePatientDto newPatient){
-        Patient p = new Patient();
-        p.setName(newPatient.name());
-        p.setLastName(newPatient.lastName());
-        p.setBirthDate(newPatient.birthDate());
-        p.setDni(newPatient.dni());
-        p.setEmail(newPatient.email());
-        p.setPhoneNumber(newPatient.phoneNumber());
-        p.setFotoUrl(newPatient.fotoUrl());
+    /*
+    public void createAdministration(POSTAdministrationDTO postAdministrationDTO){
+
+        Optional<Patient> patient = patientService.findByEmail(postAdministrationDTO.userEmail());
+        if(patient.isEmpty())
+            throw new EntityNotFoundException();
+
+        Optional<CalendarMoment> calendarMoment = calendarMomentService.findCalendarMomentByVaccineData(postAdministrationDTO.vaccineName(), postAdministrationDTO.typeDosis());
+
+        if(calendarMoment.isEmpty())
+            throw new CalendarMomentNotFoundException(
+                    "Can`t find the calendar moment with the vaccine "
+                            + postAdministrationDTO.vaccineName()+
+                            " and the dosys "
+                            +postAdministrationDTO.typeDosis()
+            );
+
+        Administration administration = Administration.builder()
+                .patientEmail(patient.get().getEmail())
+                .notes(postAdministrationDTO.note())
+                .date(LocalDateTime.now())
+                .calendarMoment(calendarMoment.get())
+                .ageToAdministrate(
+                        ((int) ChronoUnit.MONTHS.between(patient.get().getBirthDate(), LocalDate.now()))
+                )
+                .build();
+        repo.save(administration);
+    }
+     */
+
+    public Patient createPatient(CreatePatientDto newPatient){
+        if (patientRepository.existsByEmailIgnoreCase(newPatient.email()))
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El email del usuario ya ha sido registrado");
+
+        Patient p =  Patient.builder()
+                .email(newPatient.email())
+                .name(newPatient.name())
+                .lastName(newPatient.lastName())
+                .birthDate(newPatient.birthDate())
+                .dni(newPatient.dni())
+                .phoneNumber(newPatient.phoneNumber())
+                .fotoUrl(newPatient.fotoUrl())
+                .password(passwordEncoder.encode(newPatient.password()))
+                .build();
 
         List<Patient> dependents = newPatient.dependents()
                 .stream()
@@ -132,5 +177,33 @@ public class PatientService {
         return patientRepository.save(p);
     }
 
+    public void deleteByPatientId (String id){
+        UUID validId = UUID.fromString(id);
+        if (patientRepository.countDependentsByPatient(validId) == 0)
+            patientRepository.deleteById(validId);
+         else
+            throw new PatientHasDependentsException();
+    }
+
+    public Page<PatientDetailsDto> findPatientByName(Pageable pageable, String name){
+
+        return patientRepository.findPatientByName(pageable, name);
+
+    }
+
+    public PatientDetailsDto editPatientById(UUID id, PatientDetailsDto editedPatient){
+        Optional<Patient> findPatient = patientRepository.findById(id);
+        if (findPatient.isPresent()){
+            Patient patient = findPatient.get();
+            patient.setName(editedPatient.name());
+            patient.setLastName(editedPatient.lastName());
+            patient.setPhoneNumber(editedPatient.phoneNumber());
+            patient.setFotoUrl(editedPatient.fotoUrl());
+            Patient patientEdited = patientRepository.save(patient);
+            return PatientDetailsDto.of(patientEdited);
+        }else {
+            throw new PatientNotFoundException();
+        }
+    }
 
 }

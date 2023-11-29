@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface CalendarMomentRepository extends JpaRepository<CalendarMoment, UUID> {
@@ -16,6 +17,15 @@ public interface CalendarMomentRepository extends JpaRepository<CalendarMoment, 
             SELECT a.id FROM CalendarMoment a
             """)
     List<UUID> findAllIdOfCalendarMoments();
+
+    @Query("""
+            SELECT cm 
+            FROM CalendarMoment cm
+            LEFT JOIN cm.vacune as v
+            WHERE cm.dosisType = ?2
+            AND v.name = ?1
+            """)
+    Optional<CalendarMoment> findCalendarMomentByVaccineData(String vaccineName, String  dosisType);
 
     @Query("""
             SELECT new com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETVaccinesNotAdministratedDTO(
