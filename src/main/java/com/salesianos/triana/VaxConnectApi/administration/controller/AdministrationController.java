@@ -3,14 +3,17 @@ package com.salesianos.triana.VaxConnectApi.administration.controller;
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETVaccineAdministratedOnCalendar;
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETLastVaccinesAdministratedDTO;
 import com.salesianos.triana.VaxConnectApi.administration.dto.GETPatientCalendarDTO;
+import com.salesianos.triana.VaxConnectApi.administration.dto.POSTAdministrationDTO;
 import com.salesianos.triana.VaxConnectApi.administration.service.AdministrationService;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
+import jakarta.annotation.PostConstruct;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -20,6 +23,7 @@ import java.util.List;
 public class AdministrationController {
 
     private final AdministrationService service;
+
 
 
     @GetMapping("/findLastVaccineImplementedByUserId/")
