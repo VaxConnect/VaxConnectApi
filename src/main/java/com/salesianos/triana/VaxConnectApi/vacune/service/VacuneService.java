@@ -20,6 +20,10 @@ public class VacuneService {
 
     private final VacuneRepository vacuneRepository;
 
+    public Optional<Vacune> findByName(String name){
+        return vacuneRepository.findByName(name);
+    }
+
     public Page<GetAllVaccineDto> findAllVaccine(Pageable pageable) {
         return vacuneRepository.findAllVaccine(pageable);
     }

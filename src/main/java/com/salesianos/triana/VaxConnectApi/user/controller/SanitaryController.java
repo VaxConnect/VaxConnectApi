@@ -1,6 +1,7 @@
 package com.salesianos.triana.VaxConnectApi.user.controller;
 
 import com.salesianos.triana.VaxConnectApi.administration.dto.POSTAdministrationDTO;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.POSTCalendarMoment;
 import com.salesianos.triana.VaxConnectApi.security.jwt.JwtProvider;
 import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
@@ -47,6 +48,13 @@ public class SanitaryController {
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
     private final PatientService patientService;
+
+
+    @PostMapping("/sanitary/calendarMoment/create/")
+    public ResponseEntity<?> createCalendarMoment(@Valid @RequestBody POSTCalendarMoment postCalendarMoment){
+        sanitaryService.createCalendarMoment(postCalendarMoment);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
 
     @PostMapping("/sanitary/administration/create/")
     public ResponseEntity<?> createAdministration(@Valid @RequestBody POSTAdministrationDTO postAdministrationDTO){

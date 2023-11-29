@@ -3,10 +3,14 @@ package com.salesianos.triana.VaxConnectApi.calendarmoment.service;
 import com.salesianos.triana.VaxConnectApi.administration.service.AdministrationService;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETNextVaccinesToAdministrateDTO;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETVaccinesNotAdministratedDTO;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.POSTCalendarMoment;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.modal.CalendarMoment;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.repo.CalendarMomentRepository;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
+import com.salesianos.triana.VaxConnectApi.vacune.error.VacuneNotFoundException;
+import com.salesianos.triana.VaxConnectApi.vacune.modal.Vacune;
+import com.salesianos.triana.VaxConnectApi.vacune.service.VacuneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +30,26 @@ public class CalendarMomentService {
     private final PatientService patientService;
     private final CalendarMomentRepository repository;
     private final AdministrationService administrationService;
+    private final VacuneService vacuneService;
+
+
+    public void createCalendarMoment(POSTCalendarMoment postCalendarMoment){ // :)
+        Optional<Vacune> vacune = vacuneService.findByName(postCalendarMoment.vacuneName());
+
+        if(vacune.isEmpty())
+            throw new VacuneNotFoundException("The vacune with the name "+postCalendarMoment.vacuneName()+" was not found");
+
+        CalendarMoment cm = CalendarMoment.builder()
+                .age(postCalendarMoment.age())
+                .dosisType(postCalendarMoment.dosysType())
+                .discriminants(postCalendarMoment.discriminats())
+                .recomendations(postCalendarMoment.recomendation())
+                .vacune(vacune.get())
+                .build();
+
+        repository.save(cm);
+
+    }
 
     public List<UUID> findAllIdOfCalendarsMoments(){
         return repository.findAllIdOfCalendarMoments();
