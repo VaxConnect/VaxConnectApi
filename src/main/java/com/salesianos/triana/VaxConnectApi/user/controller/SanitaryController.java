@@ -28,6 +28,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriUtils;
 
 import java.net.CacheRequest;
 import java.util.List;
@@ -181,7 +182,7 @@ public class SanitaryController {
             @ApiResponse(responseCode = "200",
                     description = "Dependents has been found",
                     content = {@Content(mediaType = "application/json",
-                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
+                            array = @ArraySchema(schema = @Schema(implementation = PatientBasicDataDto.class)),
                             examples = {@ExampleObject(
                                     value = """
                                                {
@@ -268,9 +269,65 @@ public class SanitaryController {
         //el email debe ser unico crear una excepcion para eso
     }
 
+    @Operation(summary = "Delete patient by id")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "204",
+                    description = "Patient delete successfully",
+                    content = @Content
+            ),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Cant delete patients with dependents",
+                    content = @Content
+            )
+    })
     @DeleteMapping("/sanitary/patient/{id}")
     public ResponseEntity<?> deleteByPatientId(@PathVariable String id){
         patientService.deleteByPatientId(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @Operation(summary = "Get patient by name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200",
+                    description = "Patient has been found",
+                    content = {@Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                               {
+                                                             "id": "ca5c4309-ca83-44a8-a377-ecdf92bd4370",
+                                                                 "name": "j",
+                                                                 "lastName": "manoles",
+                                                                 "birthDate": "2011-10-12",
+                                                                 "dni": "123456789",
+                                                                 "email": "m@gamil.com"
+                                                         },
+                                                         {
+                                                             "id": "fd58c6ed-cd01-4811-ba30-9c284bf4dc3b",
+                                                                 "name": "Juan",
+                                                                 "lastName": "Martinez Rodriguez",
+                                                                 "birthDate": "2023-09-07",
+                                                                 "dni": "555667788",
+                                                                 "email": "juan@gmail.com"
+                                                         }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "Patient hasnt been found",
+                    content = @Content)
+    })
+    @GetMapping("/search/{name}")
+    private ResponseEntity<Page<PatientDetailsDto>> findPatientByName(@PageableDefault(page=0, size=10)Pageable pageable,
+                                                                      @PathVariable String name) {
+        String validString = UriUtils.decode(name, "UTF-8");
+        validString = validString.replace("%20", " ");
+        Page<PatientDetailsDto> findPatients = patientService.findPatientByName(pageable, validString);
+
+        if (findPatients.isEmpty())
+            return ResponseEntity.notFound().build();
+        else
+            return ResponseEntity.ok(findPatients);
     }
 }

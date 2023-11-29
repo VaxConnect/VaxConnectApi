@@ -5,12 +5,11 @@ import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
-import com.sun.security.auth.UnixNumericUserPrincipal;
-import io.swagger.v3.oas.models.media.UUIDSchema;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -113,5 +112,21 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
             WHERE p.id = ?1
             """)
     int countDependentsByPatient(UUID id);
+
+    @Query("""
+             SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto(
+                    p.id,
+                    p.name,
+                    p.lastName,
+                    p.birthDate,
+                    p.dni,
+                    p.email,
+                    p.phoneNumber,
+                    p.fotoUrl
+                )
+                FROM Patient p
+                WHERE p.name ILIKE %:name%
+            """)
+    Page<PatientDetailsDto> findPatientByName(Pageable pageable, @Param("name") String name);
 
 }
