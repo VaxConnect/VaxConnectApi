@@ -85,6 +85,10 @@ public class SanitaryService {
     public Sanitary createSanitaryWithRole(CreateUserRequest createUserRequest){
         return createSanitary(createUserRequest,EnumSet.of(UserRole.SANITARY));
     }
+    public void deleteByIdSanitary(String id){
+        UUID uuid = UUID.fromString(id);
+         sanitaryRepository.deleteById(uuid);
+    }
     public Optional<GetSanitaryByEmail> findByEmailDto (String email){
         return sanitaryRepository.getsanitaryByName(email);
     }
