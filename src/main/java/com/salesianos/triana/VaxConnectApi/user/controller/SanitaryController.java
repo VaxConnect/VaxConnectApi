@@ -277,7 +277,7 @@ public class SanitaryController {
     })
     @PostMapping("/sanitary/patient")
     public ResponseEntity<PatientDetailsWithDependentsDto> createPatient(@RequestBody CreatePatientDto newPatient) {
-        Patient patient = patientService.save(newPatient);
+        Patient patient = patientService.createPatient(newPatient);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(PatientDetailsWithDependentsDto.of(patient));
         //el email debe ser unico crear una excepcion para eso
