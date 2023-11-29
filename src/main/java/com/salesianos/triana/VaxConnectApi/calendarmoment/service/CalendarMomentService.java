@@ -37,7 +37,7 @@ public class CalendarMomentService {
         Optional<Vacune> vacune = vacuneService.findByName(postCalendarMoment.vacuneName());
 
         if(vacune.isEmpty())
-            throw new VacuneNotFoundException("The vacune with the name "+postCalendarMoment.vacuneName()+" was not found");
+            throw new VacuneNotFoundException();
 
         CalendarMoment cm = CalendarMoment.builder()
                 .age(postCalendarMoment.age())
