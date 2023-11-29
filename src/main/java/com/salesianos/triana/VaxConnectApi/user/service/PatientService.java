@@ -6,6 +6,7 @@ import com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
 import com.salesianos.triana.VaxConnectApi.user.exception.PatientHasDependentsException;
+import com.salesianos.triana.VaxConnectApi.user.exception.PatientNotFoundException;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.UserRole;
 import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
@@ -13,12 +14,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.swing.text.html.Option;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -31,7 +30,7 @@ public class PatientService {
 
     public Patient createPatient(CreateUserRequest createUserRequest, EnumSet<UserRole>roles){
         if (patientRepository.existsByEmailIgnoreCase(createUserRequest.email()))
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Elemail del usuario ya ha sido registrado");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El email del usuario ya ha sido registrado");
 
         Patient patient = Patient.builder()
                 .email(createUserRequest.email())
@@ -155,6 +154,21 @@ public class PatientService {
 
         return patientRepository.findPatientByName(pageable, name);
 
+    }
+
+    public PatientDetailsDto editPatientById(UUID id, PatientDetailsDto editedPatient){
+        Optional<Patient> findPatient = patientRepository.findById(id);
+        if (findPatient.isPresent()){
+            Patient patient = findPatient.get();
+            patient.setName(editedPatient.name());
+            patient.setLastName(editedPatient.lastName());
+            patient.setPhoneNumber(editedPatient.phoneNumber());
+            patient.setFotoUrl(editedPatient.fotoUrl());
+            Patient patientEdited = patientRepository.save(patient);
+            return PatientDetailsDto.of(patientEdited);
+        }else {
+            throw new PatientNotFoundException();
+        }
     }
 
 }
