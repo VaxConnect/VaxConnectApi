@@ -109,5 +109,6 @@ public class SanitaryService {
     public Optional<List<PatientBasicDataDto>>findDependentsByPatientId(UUID id){
         return patientRepository.findDependentsByUserId(id);
     }
+    
 
 }
