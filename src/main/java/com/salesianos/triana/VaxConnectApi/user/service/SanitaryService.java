@@ -69,7 +69,9 @@ public class SanitaryService {
     public Sanitary createSanitaryWithRole(CreateUserRequest createUserRequest){
         return createSanitary(createUserRequest,EnumSet.of(UserRole.SANITARY));
     }
-
+    public Optional<GetSanitaryByEmail> findByEmailDto (String email){
+        return sanitaryRepository.getsanitaryByName(email);
+    }
 
     public Page<PatientDetailsDto> findAllPatients(Pageable p){
         return patientRepository.findAllPatients(p);

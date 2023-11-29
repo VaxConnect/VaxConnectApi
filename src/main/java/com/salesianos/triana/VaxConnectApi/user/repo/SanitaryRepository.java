@@ -1,6 +1,7 @@
 package com.salesianos.triana.VaxConnectApi.user.repo;
 
 import com.salesianos.triana.VaxConnectApi.user.dto.GetListOfSanitaries;
+import com.salesianos.triana.VaxConnectApi.user.dto.GetSanitaryByEmail;
 import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
 import org.springframework.context.annotation.Primary;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,6 +18,7 @@ public interface SanitaryRepository extends JpaRepository<Sanitary, UUID> {
 
     @Query("""
     SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListOfSanitaries(
+        s.fotoUrl,
         s.name,
         s.email,
         s.birthDate
@@ -27,16 +29,19 @@ public interface SanitaryRepository extends JpaRepository<Sanitary, UUID> {
     List<GetListOfSanitaries> getList();
 
     @Query("""
-            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListOfSanitaries(
-        s.name,
+            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetSanitaryByEmail(
+            s.fotoUrl,
+        s.name ||' '|| s.lastName,
         s.email,
+        s.phoneNumber,
+        s.dni,
         s.birthDate
     )
     FROM Sanitary s
      WHERE s.email = ?1
             """)
 
-    Optional<GetListOfSanitaries> getsanitaryByName(String name);
+    Optional<GetSanitaryByEmail> getsanitaryByName(String email);
 
 
 

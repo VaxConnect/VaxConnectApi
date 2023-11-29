@@ -91,7 +91,8 @@ public class SecurityConfig {
                         antMatcher("/h2-console/**"),
                         antMatcher("/auth/register"),
                         antMatcher("/auth/register/sanitary"),
-                        antMatcher("/sanitary/list"),//cambiar linea 95
+                        antMatcher("/sanitary/list"),
+                        antMatcher("/sanitary/{email}"),//cambiar linea 95
                         antMatcher("/auth/login/sanitary"),
                         antMatcher("/auth/login"),
                         antMatcher("/error")

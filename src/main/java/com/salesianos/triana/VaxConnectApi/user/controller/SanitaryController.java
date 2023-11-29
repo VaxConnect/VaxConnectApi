@@ -76,6 +76,11 @@ public class SanitaryController {
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(JwtUserResponse.ofSanitary(sanitary1, token));
     }
+    @GetMapping("/sanitary/{email}")
+    public ResponseEntity<Optional<GetSanitaryByEmail>> findByEmail(@PathVariable String email){
+        Optional<GetSanitaryByEmail> getListOfSanitaries = sanitaryService.findByEmailDto(email);
+        return ResponseEntity.ok(getListOfSanitaries);
+    }
 
 
     @Operation(summary = "Get all patients")
