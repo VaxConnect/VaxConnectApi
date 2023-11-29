@@ -42,11 +42,18 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
             """)
     Optional<PatientBasicDataDto> findLoggedPatientById(UUID id);
     @Query("""
-        SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients(p.name, p.lastName, p.birthDate) 
+        SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients(p.name || ' ' || p.lastName, p.birthDate) 
         FROM Patient p 
         ORDER BY p.birthDate DESC limit 4
     """)
     List<GetListYoungestPatients> findYoungPatient();
+
+    @Query("""
+        SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GetListYoungestPatients(p.name || ' ' || p.lastName, p.birthDate) 
+        FROM Patient p 
+        ORDER BY p.createdAt DESC limit 4
+    """)
+    List<GetListYoungestPatients> findLastPatientAded();
 
     @Query("""
                 SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto(
