@@ -57,11 +57,7 @@ public class SanitaryController {
     List<GetListYoungestPatients> youngest = sanitaryService.listYoungestPatients();
     return ResponseEntity.ok(youngest);
     }
-    @GetMapping("/sanitary/list")
-    public ResponseEntity<List<GetListOfSanitaries>> getList(@AuthenticationPrincipal Sanitary sanitary){
-        List<GetListOfSanitaries> getListOfSanitaries = sanitaryService.listOfSanitaries();
-        return ResponseEntity.ok(getListOfSanitaries);
-    }
+
 
 
     @PostMapping("/sanitary/calendarMoment/create/")
@@ -74,6 +70,12 @@ public class SanitaryController {
     public ResponseEntity<?> createAdministration(@Valid @RequestBody POSTAdministrationDTO postAdministrationDTO){
         sanitaryService.createAdministration(postAdministrationDTO);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/sanitary/list")
+    public ResponseEntity<List<GetListOfSanitaries>> getList(@AuthenticationPrincipal Sanitary sanitary){
+        List<GetListOfSanitaries> getListOfSanitaries = sanitaryService.listOfSanitaries();
+        return ResponseEntity.ok(getListOfSanitaries);
     }
 
     @PostMapping("/auth/register/sanitary")
