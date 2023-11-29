@@ -57,6 +57,11 @@ public class SanitaryService {
         return patientRepository.findYoungPatient();
 
     }
+    public List<GetListYoungestPatients> findLastAddedPatient(){
+
+        return patientRepository.findLastPatientAded();
+
+    }
     public List<Sanitary> findAll(){
         return sanitaryRepository.findAll();
     }
