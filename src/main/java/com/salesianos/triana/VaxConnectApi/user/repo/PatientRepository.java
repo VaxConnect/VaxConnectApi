@@ -84,6 +84,22 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
             WHERE p.id = ?1
             """)
     Optional<GETUserProfileDetails> getUserProfileDetailsById(UUID id);
+
+    @Query("""
+            SELECT new com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails(
+                p.name || p.lastName,
+                p.email,
+                p.dni,
+                p.birthDate,
+                p.phoneNumber,
+                p.fotoUrl
+            )
+            FROM Patient p2
+            LEFT JOIN p2.dependients p
+            WHERE p2.id = ?1
+            """)
+    Optional<List<GETUserProfileDetails>> getFamilyDetails(UUID id);
+
     @Query("""
             SELECT new com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto(
                     p.id,
