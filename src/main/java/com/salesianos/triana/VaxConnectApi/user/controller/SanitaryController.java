@@ -79,9 +79,9 @@ public class SanitaryController {
     }
 
     @GetMapping("/sanitary/patients/last/")
-    public ResponseEntity<List<GetListYoungestPatients>> listLastAddedPatients(@AuthenticationPrincipal Sanitary sanitary) {
-        List<GetListYoungestPatients> lastAddedPatient = sanitaryService.findLastAddedPatient();
-        return ResponseEntity.ok(lastAddedPatient);
+    public ResponseEntity<List<GetListYoungestPatients>> listLastPatients(@AuthenticationPrincipal Sanitary sanitary) {
+        List<GetListYoungestPatients> youngest = sanitaryService.findLastAddedPatient();
+        return ResponseEntity.ok(youngest);
     }
 
 
@@ -332,7 +332,7 @@ public class SanitaryController {
                     description = "Patient hasnt been found",
                     content = @Content)
     })
-    @GetMapping("/search/{name}")
+    @GetMapping("/sanitary/search/{name}")
     private ResponseEntity<Page<PatientDetailsDto>> findPatientByName(@PageableDefault(page=0, size=10)Pageable pageable,
                                                                       @PathVariable String name) {
         String validString = UriUtils.decode(name, "UTF-8");
@@ -344,4 +344,40 @@ public class SanitaryController {
         else
             return ResponseEntity.ok(findPatients);
     }
+
+    @Operation(summary = "Edit patient")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode ="201",
+                    description = "Patient has been edited",
+                    content = { @Content(mediaType = "application/json",
+                            array = @ArraySchema(schema = @Schema(implementation = PatientDetailsWithDependentsDto.class)),
+                            examples = {@ExampleObject(
+                                    value = """
+                                                {
+                                                        "id": "66690825-6145-470c-b5a8-18bf386f1ceb",
+                                                        "name": "a",
+                                                        "lastName": "manoles",
+                                                        "birthDate": "2004-10-12",
+                                                        "dni": "123456789",
+                                                        "email": "a@gamil.com",
+                                                        "phoneNumber": 123456789,
+                                                        "fotoUrl": "foto.url"
+                                                    }
+                                            """
+                            )}
+                    )}),
+            @ApiResponse(responseCode = "404",
+                    description = "Patient not found",
+                    content = @Content),
+    })
+    @PutMapping("/sanitary/patient/{id}")
+    public ResponseEntity<PatientDetailsDto> editPatientById(@PathVariable String id, @RequestBody PatientDetailsDto newPatient) {
+        UUID StringToUUID = UUID.fromString(id);
+        PatientDetailsDto patient = patientService.editPatientById(StringToUUID, newPatient);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(patient);
+        //el email debe ser unico crear una excepcion para eso
+    }
+
+
 }
