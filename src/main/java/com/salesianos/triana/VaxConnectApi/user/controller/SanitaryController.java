@@ -408,5 +408,11 @@ public class SanitaryController {
                 .body(patient);
     }
 
+    @DeleteMapping("/sanitary/{uuid}")
+    public ResponseEntity<?> delete(@PathVariable String uuid){
+        sanitaryService.deleteByIdSanitary(uuid);
+    return ResponseEntity.noContent().build();
+    }
+
 
 }
