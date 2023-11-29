@@ -122,36 +122,6 @@ public class PatientService {
         return patientRepository.findDependentsByUserId(id);
     }
 
-    /*
-    public void createAdministration(POSTAdministrationDTO postAdministrationDTO){
-
-        Optional<Patient> patient = patientService.findByEmail(postAdministrationDTO.userEmail());
-        if(patient.isEmpty())
-            throw new EntityNotFoundException();
-
-        Optional<CalendarMoment> calendarMoment = calendarMomentService.findCalendarMomentByVaccineData(postAdministrationDTO.vaccineName(), postAdministrationDTO.typeDosis());
-
-        if(calendarMoment.isEmpty())
-            throw new CalendarMomentNotFoundException(
-                    "Can`t find the calendar moment with the vaccine "
-                            + postAdministrationDTO.vaccineName()+
-                            " and the dosys "
-                            +postAdministrationDTO.typeDosis()
-            );
-
-        Administration administration = Administration.builder()
-                .patientEmail(patient.get().getEmail())
-                .notes(postAdministrationDTO.note())
-                .date(LocalDateTime.now())
-                .calendarMoment(calendarMoment.get())
-                .ageToAdministrate(
-                        ((int) ChronoUnit.MONTHS.between(patient.get().getBirthDate(), LocalDate.now()))
-                )
-                .build();
-        repo.save(administration);
-    }
-     */
-
     public Patient createPatient(CreatePatientDto newPatient){
         if (patientRepository.existsByEmailIgnoreCase(newPatient.email()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"El email del usuario ya ha sido registrado");
