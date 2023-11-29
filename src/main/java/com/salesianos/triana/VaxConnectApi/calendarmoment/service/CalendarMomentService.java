@@ -3,12 +3,14 @@ package com.salesianos.triana.VaxConnectApi.calendarmoment.service;
 import com.salesianos.triana.VaxConnectApi.administration.service.AdministrationService;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETNextVaccinesToAdministrateDTO;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.dto.GETVaccinesNotAdministratedDTO;
+import com.salesianos.triana.VaxConnectApi.calendarmoment.modal.CalendarMoment;
 import com.salesianos.triana.VaxConnectApi.calendarmoment.repo.CalendarMomentRepository;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.PublicKey;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -27,6 +29,10 @@ public class CalendarMomentService {
 
     public List<UUID> findAllIdOfCalendarsMoments(){
         return repository.findAllIdOfCalendarMoments();
+    }
+
+    public Optional<CalendarMoment>findCalendarMomentByVaccineData(String vacune, String typeOfDosys){
+        return repository.findCalendarMomentByVaccineData(vacune,typeOfDosys);
     }
 
     public List<GETNextVaccinesToAdministrateDTO> getAllNextVaccinesToAdministrateDTOS (String email){

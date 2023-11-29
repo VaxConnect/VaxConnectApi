@@ -1,5 +1,7 @@
 package com.salesianos.triana.VaxConnectApi.user.service;
 
+import com.salesianos.triana.VaxConnectApi.administration.dto.POSTAdministrationDTO;
+import com.salesianos.triana.VaxConnectApi.administration.service.AdministrationService;
 import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.modal.Sanitary;
@@ -28,7 +30,7 @@ public class SanitaryService {
     private final PasswordEncoder passwordEncoder;
     private final SanitaryRepository sanitaryRepository;
     private final PatientRepository patientRepository;
-
+    private final AdministrationService administrationService;
 
 
     public Sanitary createSanitary (CreateUserRequest createUserRequest, EnumSet<UserRole>roles){
@@ -45,8 +47,10 @@ public class SanitaryService {
                 .roles(roles)
                 .build();
         return sanitaryRepository.save(sanitary);
+    }
 
-
+    public void createAdministration(POSTAdministrationDTO postAdministrationDTO){
+        administrationService.createAdministration(postAdministrationDTO);
     }
 
     public Optional<Sanitary> findByEmail(String email){

@@ -1,5 +1,6 @@
 package com.salesianos.triana.VaxConnectApi.user.controller;
 
+import com.salesianos.triana.VaxConnectApi.administration.dto.POSTAdministrationDTO;
 import com.salesianos.triana.VaxConnectApi.security.jwt.JwtProvider;
 import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
@@ -13,6 +14,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
 import org.springframework.context.annotation.Primary;
@@ -46,6 +48,11 @@ public class SanitaryController {
     private final JwtProvider jwtProvider;
     private final PatientService patientService;
 
+    @PostMapping("/sanitary/administration/create/")
+    public ResponseEntity<?> createAdministration(@Valid @RequestBody POSTAdministrationDTO postAdministrationDTO){
+        sanitaryService.createAdministration(postAdministrationDTO);
+        return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
     @PostMapping("/auth/register/sanitary")
     public ResponseEntity<UserResponse> createSanitary(@RequestBody CreateUserRequest createUserRequest) {
         Sanitary sanitary = sanitaryService.createSanitaryWithRole(createUserRequest);
