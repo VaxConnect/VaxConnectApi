@@ -166,27 +166,6 @@ public class PatientService {
                 .fotoUrl(newPatient.fotoUrl())
                 .password(passwordEncoder.encode(newPatient.password()))
                 .build();
-        /*
-        p.setName(newPatient.name());
-        p.setLastName(newPatient.lastName());
-        p.setBirthDate(newPatient.birthDate());
-        p.setDni(newPatient.dni());
-        p.setEmail(newPatient.email());
-        p.setPhoneNumber(newPatient.phoneNumber());
-        p.setFotoUrl(newPatient.fotoUrl());
-        p.password(passwordEncoder.encode(newPatient.password()));*/
-
-        /*
-         Patient patient = Patient.builder()
-                .email(createUserRequest.email())
-                .name(createUserRequest.name())
-                .lastName(createUserRequest.lastName())
-                .createdAt(LocalDateTime.now())
-                .birthDate(createUserRequest.birthDate())
-                .password(passwordEncoder.encode(createUserRequest.password()))
-                .roles(roles)
-                .build();
-         */
 
         List<Patient> dependents = newPatient.dependents()
                 .stream()
