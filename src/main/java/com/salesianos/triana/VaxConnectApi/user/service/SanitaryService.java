@@ -60,14 +60,15 @@ public class SanitaryService {
     }
 
 
- public Optional<Sanitary> findByEmail(String nombre){
+    public Optional<Sanitary> findByEmail(String nombre){
         Optional<Sanitary> sanitary;
         sanitary=sanitaryRepository.findFirstByEmail(nombre);
-        if (sanitary.isPresent()){
-            return sanitaryRepository.findFirstByEmail(nombre);
+        return sanitaryRepository.findFirstByEmail(nombre);
+        /*if (sanitary.isPresent()){
+
         }else {
             throw new SanitaryNotFoundException();
-        }
+        }*/
     }
     public List<GetListYoungestPatients> listYoungestPatients(){
 
