@@ -177,4 +177,13 @@ public class PatientService {
         }
     }
 
+    public void changePassword(Patient patient, String newPassword) {
+        String encodedPassword = passwordEncoder.encode(newPassword);
+        patient.setPassword(encodedPassword);
+
+        patient.setPasswordChangedTime(new Date());
+
+        patientRepository.save(patient);
+    }
+
 }

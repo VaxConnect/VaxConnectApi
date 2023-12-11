@@ -15,6 +15,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -41,6 +42,21 @@ public abstract class User implements UserDetails {
 
     @Column(name = "password")
     protected String password;
+
+    private static final long PASSWORD_EXPIRATION_TIME
+            = 30L * 24L * 60L * 60L * 1000L;    // 30 days
+
+    @Column(name = "password_changed_time")
+    private Date passwordChangedTime;
+
+    public boolean isPasswordExpired() {
+        if (this.passwordChangedTime == null) return false;
+
+        long currentTime = System.currentTimeMillis();
+        long lastChangedTime = this.passwordChangedTime.getTime();
+
+        return currentTime > lastChangedTime + PASSWORD_EXPIRATION_TIME;
+    }
 
     @Column(name = "name")
     protected String name;
