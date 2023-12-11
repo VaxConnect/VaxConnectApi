@@ -35,7 +35,7 @@ public class PasswordController {
                                         Model model, RedirectAttributes ra,
                                         @AuthenticationPrincipal Authentication authentication) throws ServletException {
         CustomDetailUserService userDetails = (CustomDetailUserService) authentication.getPrincipal();
-        Patient patient = userDetails.loadUserByUsername();
+        Patient patient = userDetails.loadUserByUsername();//nose como pasarle a este metodo el email del usuario
 
         String oldPassword = request.getParameter("oldPassword");
         String newPassword = request.getParameter("newPassword");

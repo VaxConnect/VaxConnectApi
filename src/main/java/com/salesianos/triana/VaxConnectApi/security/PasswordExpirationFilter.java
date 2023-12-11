@@ -1,12 +1,8 @@
 package com.salesianos.triana.VaxConnectApi.security;
 
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
-import com.salesianos.triana.VaxConnectApi.user.modal.User;
 import com.salesianos.triana.VaxConnectApi.user.service.CustomDetailUserService;
-import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequest;
-import jakarta.servlet.ServletResponse;
+import jakarta.servlet.*;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.security.core.Authentication;
@@ -15,7 +11,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.logging.Filter;
 
 @Component
 public class PasswordExpirationFilter implements Filter {
@@ -53,7 +48,7 @@ public class PasswordExpirationFilter implements Filter {
         return false;
     }
 
-    private User getLoggedInPatient() {
+    private Patient getLoggedInPatient() {
         Authentication authentication
                 = SecurityContextHolder.getContext().getAuthentication();
         Object principal = null;
@@ -64,7 +59,9 @@ public class PasswordExpirationFilter implements Filter {
 
         if (principal != null && principal instanceof CustomDetailUserService) {
             CustomDetailUserService userDetails = (CustomDetailUserService) principal;
-            return userDetails.loadUserByUsername();
+            String userEmail = userDetails.getClass().getName();
+
+            return userDetails.loadUserByUsername(); //nose como pasarle a este metodo el email del usuario
         }
 
         return null;
