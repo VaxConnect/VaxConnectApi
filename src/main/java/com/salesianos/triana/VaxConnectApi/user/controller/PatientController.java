@@ -1,5 +1,6 @@
 package com.salesianos.triana.VaxConnectApi.user.controller;
 
+import com.salesianos.triana.VaxConnectApi.security.InMemoryTokenBlacklist;
 import com.salesianos.triana.VaxConnectApi.user.dto.*;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.ExampleObject;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,6 +23,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -37,11 +40,22 @@ public class PatientController {
     private final PatientService patientService;
     private final AuthenticationManager authenticationManager;
     private final JwtProvider jwtProvider;
+    private final InMemoryTokenBlacklist tokenBlacklist;
 
     @PostMapping("/auth/register")
     public ResponseEntity<UserResponse> createdPatientWithPatientRole(@RequestBody CreateUserRequest createUserRequest){
         Patient patient = patientService.createPatientWithPatientRole(createUserRequest);
         return ResponseEntity.status(HttpStatus.CREATED).body(UserResponse.fromUser(patient));
+    }
+
+    @PostMapping("/userLogout")
+    public ResponseEntity<String> logout(HttpServletRequest request) {
+        String token = extractTokenFromRequest(request);
+        tokenBlacklist.addToBlacklist(token);
+
+        // Clear any session-related data if necessary
+
+        return ResponseEntity.ok("Logged out successfully");
     }
 
     @PostMapping("/auth/login")
@@ -150,6 +164,20 @@ public class PatientController {
     @GetMapping("/patient/myFamilyProfile/")
     public ResponseEntity<List<GETUserProfileDetails>> viewMyFamilyProfile(@AuthenticationPrincipal Patient patient){
         return ResponseEntity.ok(patientService.getFamilyOfUserDetails(patient.getId()));
+    }
+
+    public String extractTokenFromRequest(HttpServletRequest request) {
+        // Get the Authorization header from the request
+        String authorizationHeader = request.getHeader("Authorization");
+
+        // Check if the Authorization header is not null and starts with "Bearer "
+        if (StringUtils.hasText(authorizationHeader) && authorizationHeader.startsWith("Bearer ")) {
+            // Extract the JWT token (remove "Bearer " prefix)
+            return authorizationHeader.substring(7);
+        }
+
+        // If the Authorization header is not valid, return null
+        return null;
     }
 
 }
