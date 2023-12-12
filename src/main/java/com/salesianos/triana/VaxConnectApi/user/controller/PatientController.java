@@ -21,10 +21,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.salesianos.triana.VaxConnectApi.security.jwt.JwtProvider;
 
 
@@ -150,6 +147,22 @@ public class PatientController {
     @GetMapping("/patient/myFamilyProfile/")
     public ResponseEntity<List<GETUserProfileDetails>> viewMyFamilyProfile(@AuthenticationPrincipal Patient patient){
         return ResponseEntity.ok(patientService.getFamilyOfUserDetails(patient.getId()));
+    }
+    @PostMapping("/auth/newregister")
+    public  ResponseEntity<String> registre (@RequestBody CreateUserRequest createUserRequest){
+        return new ResponseEntity<>(patientService.newregistrer(createUserRequest),HttpStatus.OK);
+    }
+    @PutMapping("/patient/verify-account")
+    public ResponseEntity<String> verifyAccount (@RequestParam String email, @RequestParam String otp){
+        return new ResponseEntity<>(patientService.verifyAccount(email,otp),HttpStatus.OK);
+    }
+    @PutMapping("/patient/regenerate-otp")
+    public ResponseEntity<String> regenerateOtp(@RequestParam String email){
+        return  new ResponseEntity<>(patientService.regenerateOtp(email),HttpStatus.OK);
+    }
+    @PutMapping("/patient/newlogin")
+    public ResponseEntity<String> newLogin(@RequestBody LoginRequest patientBasicDataDto,CreateUserRequest createUserRequest){
+        return  new ResponseEntity<>(patientService.login(patientBasicDataDto,createUserRequest),HttpStatus.OK);
     }
 
 }

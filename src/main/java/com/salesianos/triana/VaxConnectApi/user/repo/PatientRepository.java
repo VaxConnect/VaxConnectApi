@@ -159,4 +159,6 @@ public interface PatientRepository extends JpaRepository<Patient, UUID> {
             """)
     Page<PatientDetailsDto> findPatientByName(Pageable pageable, @Param("name") String name);
 
+    Optional<Patient> findByEmail(String email);
+
 }

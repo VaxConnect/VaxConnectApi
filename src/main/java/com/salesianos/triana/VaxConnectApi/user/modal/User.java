@@ -56,6 +56,7 @@ public abstract class User implements UserDetails {
     protected LocalDate birthDate;
 
     protected String dni;
+    protected String OTP;
 
     @Column(name = "foto_url")
     protected String fotoUrl;
