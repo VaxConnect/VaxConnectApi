@@ -43,8 +43,8 @@ public abstract class User implements UserDetails {
     @Column(name = "password")
     protected String password;
 
-    private static final long PASSWORD_EXPIRATION_TIME
-            = 30L * 24L * 60L * 60L * 1000L;    // 30 days
+    private static final long PASSWORD_EXPIRATION_TIME = 60L * 60L * 1000L;
+            //= 30L * 24L * 60L * 60L * 1000L;    // 30 days
 
     @Column(name = "password_changed_time")
     private Date passwordChangedTime;

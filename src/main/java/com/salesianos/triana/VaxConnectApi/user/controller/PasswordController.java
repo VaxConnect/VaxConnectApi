@@ -7,7 +7,9 @@ import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -24,42 +26,15 @@ public class PasswordController {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @GetMapping("/change_password")
+    @GetMapping("patient/change_password")
     public String showChangePasswordForm(Model model) {
         model.addAttribute("pageTitle", "Change Expired Password");
         return "change_password";
     }
 
-    @PostMapping("/change_password")
-    public String processChangePassword(HttpServletRequest request, HttpServletResponse response,
-                                        Model model, RedirectAttributes ra,
-                                        @AuthenticationPrincipal Authentication authentication) throws ServletException {
-        CustomDetailUserService userDetails = (CustomDetailUserService) authentication.getPrincipal();
-        Patient patient = userDetails.loadUserByUsername();//nose como pasarle a este metodo el email del usuario
-
-        String oldPassword = request.getParameter("oldPassword");
-        String newPassword = request.getParameter("newPassword");
-
-        model.addAttribute("pageTitle", "Change Expired Password");
-
-        if (oldPassword.equals(newPassword)) {
-            model.addAttribute("message", "Your new password must be different than the old one.");
-
-            return "change_password";
-        }
-
-        if (!passwordEncoder.matches(oldPassword, patient.getPassword())) {
-            model.addAttribute("message", "Your old password is incorrect.");
-            return "change_password";
-
-        } else {
-            patientService.changePassword(patient, newPassword);
-            request.logout();
-            ra.addFlashAttribute("message", "You have changed your password successfully. "
-                    + "Please login again.");
-
-            return "redirect:/login";
-        }
-
+    @PostMapping("patient/change_password")
+    public ResponseEntity<?> processChangePassword(@AuthenticationPrincipal Patient patient, String newPassword) {
+        patientService.changePassword(patient, newPassword);
+        return ResponseEntity.noContent().build();
     }
 }

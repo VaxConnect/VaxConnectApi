@@ -5,6 +5,7 @@ import com.salesianos.triana.VaxConnectApi.user.dto.CreateUserRequest;
 import com.salesianos.triana.VaxConnectApi.user.dto.GETUserProfileDetails;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientBasicDataDto;
 import com.salesianos.triana.VaxConnectApi.user.dto.PatientDetailsDto;
+import com.salesianos.triana.VaxConnectApi.user.exception.PatientChangePasswordException;
 import com.salesianos.triana.VaxConnectApi.user.exception.PatientHasDependentsException;
 import com.salesianos.triana.VaxConnectApi.user.exception.PatientNotFoundException;
 import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
@@ -178,12 +179,17 @@ public class PatientService {
     }
 
     public void changePassword(Patient patient, String newPassword) {
-        String encodedPassword = passwordEncoder.encode(newPassword);
-        patient.setPassword(encodedPassword);
+        //if (patient.isPasswordExpired()){
+            String encodedPassword = passwordEncoder.encode(newPassword);
+            patient.setPassword(encodedPassword);
 
-        patient.setPasswordChangedTime(new Date());
+            patient.setPasswordChangedTime(new Date());
 
-        patientRepository.save(patient);
+            patientRepository.save(patient);
+       /* } else{
+            throw new PatientChangePasswordException();
+        }*/
+
     }
 
 }

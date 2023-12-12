@@ -49,7 +49,7 @@ public class PasswordExpirationFilter implements Filter {
     }
 
     private Patient getLoggedInPatient() {
-        Authentication authentication
+        /*Authentication authentication
                 = SecurityContextHolder.getContext().getAuthentication();
         Object principal = null;
 
@@ -62,6 +62,13 @@ public class PasswordExpirationFilter implements Filter {
             String userEmail = userDetails.getClass().getName();
 
             return userDetails.loadUserByUsername(); //nose como pasarle a este metodo el email del usuario
+        }
+
+        return null;*/
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication != null && authentication.getPrincipal() instanceof Patient) {
+            return (Patient) authentication.getPrincipal();
         }
 
         return null;
