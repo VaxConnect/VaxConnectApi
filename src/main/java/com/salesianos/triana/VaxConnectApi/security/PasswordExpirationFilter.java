@@ -14,6 +14,35 @@ import java.util.Date;
 
 @Component
 public class PasswordExpirationFilter implements Filter {
+
+    @Override
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException{
+        HttpServletRequest httpRequest = (HttpServletRequest) request;
+        String requestUrl = httpRequest.getRequestURL().toString();
+
+        if (requestUrl.endsWith(".css") || requestUrl.endsWith(".png") || requestUrl.endsWith(".js")
+                || requestUrl.endsWith(".css")){
+            chain.doFilter(httpRequest, response);
+            return;
+        }
+        System.out.println(requestUrl);
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        Object principal = null;
+        if (authentication != null){
+            principal = authentication.getPrincipal();
+        }
+
+        if (principal != null && principal instanceof CustomDetailUserService){
+            CustomDetailUserService userDetails = (CustomDetailUserService) principal;
+            Patient patient = userDetails.getPatient()//no deja llmar a un paciente
+        }
+
+        chain.doFilter(request, response);
+    }
+
+
+    /*
     @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
@@ -64,7 +93,7 @@ public class PasswordExpirationFilter implements Filter {
             return userDetails.loadUserByUsername(); //nose como pasarle a este metodo el email del usuario
         }
 
-        return null;*/
+        return null;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         if (authentication != null && authentication.getPrincipal() instanceof Patient) {
@@ -83,6 +112,6 @@ public class PasswordExpirationFilter implements Filter {
         HttpServletResponse httpResponse = (HttpServletResponse) response;
         String redirectURL = httpRequest.getContextPath() + "/change_password";
         httpResponse.sendRedirect(redirectURL);
-    }
+    }*/
 
 }
