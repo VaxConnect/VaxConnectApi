@@ -10,23 +10,29 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.Optional;
 import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.Mockito.when;
+
 public class CustomDetailUserServiceTests {
 
-    @InjectMocks
+    @Autowired
     PatientService patientService;
 
-    @InjectMocks
+    @Autowired
     SanitaryService sanitaryService;
 
     @ParameterizedTest
     @MethodSource("generateArray")
     void loadUserByUsername(String email){
         Optional<Patient> patient = patientService.findByEmail(email);
+        when(patientService.findByEmail(email)).thenReturn(Optional.empty());
         Optional<Sanitary> sanitary = sanitaryService.findByEmail(email);
 
         if (patient.isPresent()){
@@ -39,7 +45,6 @@ public class CustomDetailUserServiceTests {
                 
             }
         }
-        //Mockito.when(repositorio.findAll()).thenReturn(data);
 
     }
 
@@ -50,7 +55,4 @@ public class CustomDetailUserServiceTests {
                 Arguments.arguments("cccc")
         );
     }
-
-
-
 }
