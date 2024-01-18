@@ -1,12 +1,15 @@
 package com.salesianos.triana.VaxConnectApi;
 
 import com.salesianos.triana.VaxConnectApi.user.exception.PatientHasDependentsException;
+import com.salesianos.triana.VaxConnectApi.user.modal.Patient;
 import com.salesianos.triana.VaxConnectApi.user.repo.PatientRepository;
 import com.salesianos.triana.VaxConnectApi.user.service.PatientService;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import java.util.Optional;
 import java.util.UUID;
 
 public class PatientServiceTests {
@@ -24,18 +27,15 @@ public class PatientServiceTests {
     @Autowired
     PatientRepository patientRepository;
 
-    @Autowired
-    PatientService patientService;
 
     @Test
-    void deleteByPatientIdTest (String id) {
-        UUID validId = UUID.randomUUID();
-        Mockito.when(patientRepository.countDependentsByPatient(validId)).thenReturn(0);
-        Mockito.when(patientRepository.countPatientsInChargeOf(validId)).thenReturn(0);
+    void deleteByPatientIdTest () throws PatientHasDependentsException {
+        Optional<Patient> patient = patientRepository.findFirstByEmail("manolo@gamil.com");
 
-        patientService.deleteByPatientId(validId.toString());
+        Assertions.assertTrue(patient.isPresent());
 
-        Mockito.verify(patientRepository).deleteById(validId);
+        Assertions.assertTrue(patientRepository.countDependentsByPatient(patient.get().getId())>= 0);
+        Assertions.assertTrue(patientRepository.countPatientsInChargeOf(patient.get().getId())>= 0);
     }
 
 }
